@@ -3,7 +3,6 @@ package log
 import (
 	"fmt"
 	"os"
-	"strings"
 	"time"
 )
 
@@ -63,21 +62,6 @@ func (e *Entry) WithError(err error) *Entry {
 	}
 
 	ctx := e.WithField("error", err.Error())
-
-	if s, ok := err.(stackTracer); ok {
-		frame := s.StackTrace()[0]
-
-		name := fmt.Sprintf("%n", frame)
-		file := fmt.Sprintf("%+s", frame)
-		line := fmt.Sprintf("%d", frame)
-
-		parts := strings.Split(file, "\n\t")
-		if len(parts) > 1 {
-			file = parts[1]
-		}
-
-		ctx = ctx.WithField("source", fmt.Sprintf("%s: %s:%s", name, file, line))
-	}
 
 	if f, ok := err.(Fielder); ok {
 		ctx = ctx.WithFields(f.Fields())
