@@ -4,20 +4,20 @@ import (
 	"context"
 	"testing"
 
-	"github.com/tj/assert"
-
-	"github.com/apex/log"
+	"github.com/caarlos0/log"
+	"github.com/matryer/is"
 )
 
 func TestFromContext(t *testing.T) {
+	is := is.New(t)
 	ctx := context.Background()
 
 	logger := log.FromContext(ctx)
-	assert.Equal(t, log.Log, logger)
+	is.Equal(log.Log, logger)
 
 	logs := log.WithField("foo", "bar")
 	ctx = log.NewContext(ctx, logs)
 
 	logger = log.FromContext(ctx)
-	assert.Equal(t, logs, logger)
+	is.Equal(logs, logger)
 }

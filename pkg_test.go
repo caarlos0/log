@@ -4,9 +4,9 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/apex/log"
-	"github.com/apex/log/handlers/memory"
-	"github.com/stretchr/testify/assert"
+	"github.com/caarlos0/log"
+	"github.com/caarlos0/log/handlers/memory"
+	"github.com/matryer/is"
 )
 
 type Pet struct {
@@ -28,8 +28,9 @@ func TestInfo(t *testing.T) {
 	log.Infof("logged in %s", "Tobi")
 
 	e := h.Entries[0]
-	assert.Equal(t, e.Message, "logged in Tobi")
-	assert.Equal(t, e.Level, log.InfoLevel)
+	is := is.New(t)
+	is.Equal(e.Message, "logged in Tobi")
+	is.Equal(e.Level, log.InfoLevel)
 }
 
 func TestFielder(t *testing.T) {
@@ -40,7 +41,8 @@ func TestFielder(t *testing.T) {
 	log.WithFields(pet).Info("add pet")
 
 	e := h.Entries[0]
-	assert.Equal(t, log.Fields{"name": "Tobi", "age": 3}, e.Fields)
+	is := is.New(t)
+	is.Equal(log.Fields{"name": "Tobi", "age": 3}, e.Fields)
 }
 
 // Unstructured logging is supported, but not recommended since it is hard to query.

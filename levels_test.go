@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/matryer/is"
 )
 
 func TestParseLevel(t *testing.T) {
@@ -24,15 +24,17 @@ func TestParseLevel(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.String, func(t *testing.T) {
 			l, err := ParseLevel(c.String)
-			assert.NoError(t, err, "parse")
-			assert.Equal(t, c.Level, l)
+			is := is.New(t)
+			is.NoErr(err) // no parse err
+			is.Equal(c.Level, l)
 		})
 	}
 
 	t.Run("invalid", func(t *testing.T) {
 		l, err := ParseLevel("something")
-		assert.Equal(t, ErrInvalidLevel, err)
-		assert.Equal(t, InvalidLevel, l)
+		is := is.New(t)
+		is.Equal(ErrInvalidLevel, err)
+		is.Equal(InvalidLevel, l)
 	})
 }
 
@@ -46,8 +48,9 @@ func TestLevel_MarshalJSON(t *testing.T) {
 	expect := `{"fields":{},"level":"info","timestamp":"0001-01-01T00:00:00Z","message":"hello"}`
 
 	b, err := json.Marshal(e)
-	assert.NoError(t, err)
-	assert.Equal(t, expect, string(b))
+	is := is.New(t)
+	is.NoErr(err)
+	is.Equal(expect, string(b))
 }
 
 func TestLevel_UnmarshalJSON(t *testing.T) {
@@ -55,6 +58,7 @@ func TestLevel_UnmarshalJSON(t *testing.T) {
 	e := new(Entry)
 
 	err := json.Unmarshal([]byte(s), e)
-	assert.NoError(t, err)
-	assert.Equal(t, InfoLevel, e.Level)
+	is := is.New(t)
+	is.NoErr(err)
+	is.Equal(InfoLevel, e.Level)
 }
