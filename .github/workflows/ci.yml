@@ -3,25 +3,17 @@ on: [push, pull_request]
 
 jobs:
   build:
-    name: Build
+    name: build
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        go: ['1.13', '1.14', '1.15']
+        go: ['1.18']
     steps:
-
     - uses: actions/checkout@v2
-    - name: Set up Go ${{ matrix.go }}
-      uses: actions/setup-go@v2
+    - uses: actions/setup-go@v2
       with:
         go-version: ${{ matrix.go }}
-
-    - name: Deps
-      run: go mod download
-      
-    - name: Vet
-      run: go vet ./...
-
-    - name: Test
-      run: go test ./...
+    - run: go mod tidy
+    - run: go vet ./...
+    - run: go test ./...
 
