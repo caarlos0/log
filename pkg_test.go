@@ -78,6 +78,5 @@ func Example_trace() {
 		return
 	}
 
-	fn()
-	return
+	_ = fn()
 }

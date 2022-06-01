@@ -96,12 +96,12 @@ func TestLogger_Trace_info(t *testing.T) {
 		Level:   log.InfoLevel,
 	}
 
-	func() (err error) {
+	is := is.New(t)
+	is.NoErr(func() (err error) {
 		defer l.WithField("file", "sloth.png").Trace("upload").Stop(&err)
 		return nil
-	}()
+	}())
 
-	is := is.New(t)
 	is.Equal(2, len(h.Entries))
 
 	{
@@ -128,12 +128,12 @@ func TestLogger_Trace_error(t *testing.T) {
 		Level:   log.InfoLevel,
 	}
 
-	func() (err error) {
+	is := is.New(t)
+	is.True(func() (err error) {
 		defer l.WithField("file", "sloth.png").Trace("upload").Stop(&err)
 		return fmt.Errorf("boom")
-	}()
+	}() != nil)
 
-	is := is.New(t)
 	is.Equal(2, len(h.Entries))
 
 	{
