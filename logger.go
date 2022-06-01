@@ -136,12 +136,6 @@ func (l *Logger) Fatalf(msg string, v ...interface{}) {
 	NewEntry(l).Fatalf(msg, v...)
 }
 
-// Trace returns a new entry with a Stop method to fire off
-// a corresponding completion log, useful with defer.
-func (l *Logger) Trace(msg string) *Entry {
-	return NewEntry(l).Trace(msg)
-}
-
 // log the message, invoking the handler. We clone the entry here
 // to bypass the overhead in Entry methods when the level is not
 // met.

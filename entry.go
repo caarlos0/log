@@ -19,7 +19,6 @@ type Entry struct {
 	Level     Level     `json:"level"`
 	Timestamp time.Time `json:"timestamp"`
 	Message   string    `json:"message"`
-	start     time.Time
 	fields    []Fields
 }
 
@@ -119,26 +118,6 @@ func (e *Entry) Errorf(msg string, v ...interface{}) {
 // Fatalf level formatted message, followed by an exit.
 func (e *Entry) Fatalf(msg string, v ...interface{}) {
 	e.Fatal(fmt.Sprintf(msg, v...))
-}
-
-// Trace returns a new entry with a Stop method to fire off
-// a corresponding completion log, useful with defer.
-func (e *Entry) Trace(msg string) *Entry {
-	e.Info(msg)
-	v := e.WithFields(e.Fields)
-	v.Message = msg
-	v.start = time.Now()
-	return v
-}
-
-// Stop should be used with Trace, to fire off the completion message. When
-// an `err` is passed the "error" field is set, and the log level is error.
-func (e *Entry) Stop(err *error) {
-	if err == nil || *err == nil {
-		e.WithDuration(time.Since(e.start)).Info(e.Message)
-	} else {
-		e.WithDuration(time.Since(e.start)).WithError(*err).Error(e.Message)
-	}
 }
 
 // mergedFields returns the fields list collapsed into a single map.

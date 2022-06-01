@@ -18,5 +18,4 @@ type Interface interface {
 	Warnf(string, ...interface{})
 	Errorf(string, ...interface{})
 	Fatalf(string, ...interface{})
-	Trace(string) *Entry
 }

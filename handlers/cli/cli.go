@@ -82,16 +82,17 @@ func (h *Handler) HandleLog(e *log.Entry) error {
 		style.Bold(true).PaddingLeft(h.Padding).Render(level),
 		e.Message,
 	)
+
 	if len(names) > 0 {
 		pad := h.padding(e.Message)
 		fmt.Fprint(h.Writer, lipgloss.NewStyle().PaddingLeft(pad).Render(""))
 	}
+
 	for _, name := range names {
 		fmt.Fprintf(h.Writer, " %s=%v", style.Render(name), e.Fields.Get(name))
 	}
 
 	fmt.Fprintln(h.Writer)
-
 	return nil
 }
 

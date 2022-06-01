@@ -100,9 +100,3 @@ func Errorf(msg string, v ...interface{}) {
 func Fatalf(msg string, v ...interface{}) {
 	Log.Fatalf(msg, v...)
 }
-
-// Trace returns a new entry with a Stop method to fire off
-// a corresponding completion log, useful with defer.
-func Trace(msg string) *Entry {
-	return Log.Trace(msg)
-}
