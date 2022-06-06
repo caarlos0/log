@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/caarlos0/log"
+	"github.com/caarlos0/log/handlers/cli"
 	"github.com/caarlos0/log/handlers/memory"
 	"github.com/matryer/is"
 )
@@ -60,6 +61,8 @@ func TestRootLogOptions(t *testing.T) {
 	log.Warnf("warn %d", 1)
 	log.Error("error")
 	log.Errorf("warn %d", 1)
+	log.SetHandler(cli.Default)
+	log.WithField("foo", "bar").Info("foo")
 }
 
 // Unstructured logging is supported, but not recommended since it is hard to query.
