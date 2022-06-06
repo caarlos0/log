@@ -1,12 +1,9 @@
 package log
 
-import "time"
-
 // Interface represents the API of both Logger and Entry.
 type Interface interface {
 	WithFields(Fielder) *Entry
 	WithField(string, interface{}) *Entry
-	WithDuration(time.Duration) *Entry
 	WithError(error) *Entry
 	Debug(string)
 	Info(string)

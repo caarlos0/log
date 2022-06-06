@@ -3,7 +3,6 @@ package log
 import (
 	stdlog "log"
 	"sort"
-	"time"
 )
 
 // assert interface compliance.
@@ -73,12 +72,6 @@ func (l *Logger) WithFields(fields Fielder) *Entry {
 // case or underscores
 func (l *Logger) WithField(key string, value interface{}) *Entry {
 	return NewEntry(l).WithField(key, value)
-}
-
-// WithDuration returns a new entry with the "duration" field set
-// to the given duration in milliseconds.
-func (l *Logger) WithDuration(d time.Duration) *Entry {
-	return NewEntry(l).WithDuration(d)
 }
 
 // WithError returns a new entry with the "error" set to `err`.

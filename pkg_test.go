@@ -9,7 +9,6 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/caarlos0/log"
 )
@@ -31,7 +30,6 @@ func TestRootLogOptions(t *testing.T) {
 	log.SetHandler(log.New(&out))
 	log.SetLevel(log.DebugLevel)
 	log.SetLevelFromString("info")
-	log.WithDuration(time.Second).Info("a")
 	log.WithError(fmt.Errorf("here")).Info("a")
 	log.Debug("debug")
 	log.Debugf("warn %d", 1)

@@ -3,7 +3,6 @@ package log
 import (
 	"fmt"
 	"testing"
-	"time"
 
 	"github.com/matryer/is"
 )
@@ -23,7 +22,6 @@ func TestEntry_WithFields(t *testing.T) {
 	is.Equal(e.Message, "upload")
 	is.Equal(e.Fields, Fields{"foo": "hello", "bar": "world"})
 	is.Equal(e.Level, InfoLevel)
-	is.True(e.Timestamp != time.Time{}) // not empty
 }
 
 func TestEntry_WithField(t *testing.T) {
@@ -59,13 +57,6 @@ func TestEntry_WithError_nil(t *testing.T) {
 	b := a.WithError(nil)
 	is.Equal(Fields{}, a.mergedFields())
 	is.Equal(Fields{}, b.mergedFields())
-}
-
-func TestEntry_WithDuration(t *testing.T) {
-	is := is.New(t)
-	a := NewEntry(nil)
-	b := a.WithDuration(time.Second * 2)
-	is.Equal(Fields{"duration": int64(2000)}, b.mergedFields())
 }
 
 type errFields string

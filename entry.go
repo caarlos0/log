@@ -14,12 +14,11 @@ var Now = time.Now
 
 // Entry represents a single log entry.
 type Entry struct {
-	Logger    *Logger   `json:"-"`
-	Fields    Fields    `json:"fields"`
-	Level     Level     `json:"level"`
-	Timestamp time.Time `json:"timestamp"`
-	Message   string    `json:"message"`
-	fields    []Fields
+	Logger  *Logger `json:"-"`
+	Fields  Fields  `json:"fields"`
+	Level   Level   `json:"level"`
+	Message string  `json:"message"`
+	fields  []Fields
 }
 
 // NewEntry returns a new entry for `log`.
@@ -43,12 +42,6 @@ func (e *Entry) WithFields(fields Fielder) *Entry {
 // WithField returns a new entry with the `key` and `value` set.
 func (e *Entry) WithField(key string, value interface{}) *Entry {
 	return e.WithFields(Fields{key: value})
-}
-
-// WithDuration returns a new entry with the "duration" field set
-// to the given duration in milliseconds.
-func (e *Entry) WithDuration(d time.Duration) *Entry {
-	return e.WithField("duration", d.Milliseconds())
 }
 
 // WithError returns a new entry with the "error" set to `err`.
@@ -136,10 +129,9 @@ func (e *Entry) mergedFields() Fields {
 // finalize returns a copy of the Entry with Fields merged.
 func (e *Entry) finalize(level Level, msg string) *Entry {
 	return &Entry{
-		Logger:    e.Logger,
-		Fields:    e.mergedFields(),
-		Level:     level,
-		Message:   msg,
-		Timestamp: Now(),
+		Logger:  e.Logger,
+		Fields:  e.mergedFields(),
+		Level:   level,
+		Message: msg,
 	}
 }
