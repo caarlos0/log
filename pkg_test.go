@@ -72,9 +72,10 @@ func Example_multipleFields() {
 
 var update = flag.Bool("update", false, "update .golden files")
 
-func requireEqualOutput(tb testing.TB, bts []byte) {
+func requireEqualOutput(tb testing.TB, in []byte) {
 	tb.Helper()
 
+	bts := useLinuxEOL(in)
 	golden := "testdata/" + tb.Name() + ".golden"
 	if *update {
 		if err := os.MkdirAll(filepath.Dir(golden), 0o755); err != nil {
@@ -89,12 +90,17 @@ func requireEqualOutput(tb testing.TB, bts []byte) {
 	if err != nil {
 		tb.Fatal(err)
 	}
+	gbts = useLinuxEOL(bts)
 
-	sg := format(string(gbts))
-	so := format(string(bts))
-	if sg != so {
+	if !bytes.Equal(bts, gbts) {
+		sg := format(string(gbts))
+		so := format(string(bts))
 		tb.Fatalf("output do not match:\ngot:\n%s\n\nexpected:\n%s\n\n", so, sg)
 	}
+}
+
+func useLinuxEOL(bts []byte) []byte {
+	return bytes.ReplaceAll(bts, []byte("\r\n"), []byte("\n"))
 }
 
 func format(str string) string {
