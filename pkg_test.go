@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 
@@ -90,13 +91,17 @@ func requireEqualOutput(tb testing.TB, bts []byte) {
 		tb.Fatal(err)
 	}
 
-	sg := formatEscapes(string(gbts))
-	so := formatEscapes(string(bts))
+	sg := format(string(gbts))
+	so := format(string(bts))
 	if sg != so {
 		tb.Fatalf("output do not match:\ngot:\n%s\n\nexpected:\n%s\n\n", so, sg)
 	}
 }
 
-func formatEscapes(str string) string {
-	return strings.ReplaceAll(str, "\x1b", "\\x1b")
+func format(str string) string {
+	eol := "\n"
+	if runtime.GOOS == "windows" {
+		eol = "\r\n"
+	}
+	return strings.ReplaceAll(strings.ReplaceAll(str, "\x1b", "\\x1b"), "\n", eol)
 }
