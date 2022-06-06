@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"runtime"
 	"strings"
 	"testing"
 
@@ -99,9 +98,10 @@ func requireEqualOutput(tb testing.TB, bts []byte) {
 }
 
 func format(str string) string {
-	eol := "\n"
-	if runtime.GOOS == "windows" {
-		eol = "\r\n"
-	}
-	return strings.ReplaceAll(strings.ReplaceAll(str, "\x1b", "\\x1b"), "\n", eol)
+	return strings.NewReplacer(
+		"\x1b", "\\x1b",
+		"\n", "\\n",
+		"\r", "\\r",
+		"\t", "\\t",
+	).Replace(str)
 }
