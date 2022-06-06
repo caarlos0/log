@@ -2,7 +2,9 @@ package log_test
 
 import (
 	"errors"
+	"fmt"
 	"testing"
+	"time"
 
 	"github.com/caarlos0/log"
 	"github.com/caarlos0/log/handlers/memory"
@@ -43,6 +45,21 @@ func TestFielder(t *testing.T) {
 	e := h.Entries[0]
 	is := is.New(t)
 	is.Equal(log.Fields{"name": "Tobi", "age": 3}, e.Fields)
+}
+
+func TestRootLogOptions(t *testing.T) {
+	log.SetLevel(log.DebugLevel)
+	log.SetLevelFromString("info")
+	log.WithDuration(time.Second).Info("a")
+	log.WithError(fmt.Errorf("here")).Info("a")
+	log.Debug("debug")
+	log.Debugf("warn %d", 1)
+	log.Info("info")
+	log.Infof("warn %d", 1)
+	log.Warn("warn")
+	log.Warnf("warn %d", 1)
+	log.Error("error")
+	log.Errorf("warn %d", 1)
 }
 
 // Unstructured logging is supported, but not recommended since it is hard to query.
