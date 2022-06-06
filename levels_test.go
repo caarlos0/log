@@ -1,7 +1,6 @@
 package log
 
 import (
-	"encoding/json"
 	"testing"
 
 	"github.com/matryer/is"
@@ -36,29 +35,4 @@ func TestParseLevel(t *testing.T) {
 		is.Equal(ErrInvalidLevel, err)
 		is.Equal(InvalidLevel, l)
 	})
-}
-
-func TestLevel_MarshalJSON(t *testing.T) {
-	e := Entry{
-		Level:   InfoLevel,
-		Message: "hello",
-		Fields:  Fields{},
-	}
-
-	expect := `{"fields":{},"level":"info","timestamp":"0001-01-01T00:00:00Z","message":"hello"}`
-
-	b, err := json.Marshal(e)
-	is := is.New(t)
-	is.NoErr(err)
-	is.Equal(expect, string(b))
-}
-
-func TestLevel_UnmarshalJSON(t *testing.T) {
-	s := `{"fields":{},"level":"info","timestamp":"0001-01-01T00:00:00Z","message":"hello"}`
-	e := new(Entry)
-
-	err := json.Unmarshal([]byte(s), e)
-	is := is.New(t)
-	is.NoErr(err)
-	is.Equal(InfoLevel, e.Level)
 }
