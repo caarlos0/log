@@ -1,0 +1,10 @@
+  • a                             duration=1000
+  • a                             error=here
+  • info
+  • warn 1
+  • warn
+  • warn 1
+  ⨯ error
+  ⨯ warn 1
+  • foo                           foo=bar
+  • add pet                       age=3   name=Tobi

@@ -1,5 +1,4 @@
-// Package cli implements a colored text handler suitable for command-line interfaces.
-package cli
+package log
 
 import (
 	"fmt"
@@ -7,33 +6,29 @@ import (
 	"os"
 	"sync"
 
-	"github.com/caarlos0/log"
 	"github.com/charmbracelet/lipgloss"
 )
 
-// Default handler outputting to stderr.
-var Default = New(os.Stderr)
-
 // Styles mapping.
 var Styles = [...]lipgloss.Style{
-	log.DebugLevel: lipgloss.NewStyle().Foreground(lipgloss.Color("15")),
-	log.InfoLevel:  lipgloss.NewStyle().Foreground(lipgloss.Color("12")),
-	log.WarnLevel:  lipgloss.NewStyle().Foreground(lipgloss.Color("11")),
-	log.ErrorLevel: lipgloss.NewStyle().Foreground(lipgloss.Color("9")),
-	log.FatalLevel: lipgloss.NewStyle().Foreground(lipgloss.Color("9")),
+	DebugLevel: lipgloss.NewStyle().Foreground(lipgloss.Color("15")),
+	InfoLevel:  lipgloss.NewStyle().Foreground(lipgloss.Color("12")),
+	WarnLevel:  lipgloss.NewStyle().Foreground(lipgloss.Color("11")),
+	ErrorLevel: lipgloss.NewStyle().Foreground(lipgloss.Color("9")),
+	FatalLevel: lipgloss.NewStyle().Foreground(lipgloss.Color("9")),
 }
 
 // Strings mapping.
 var Strings = [...]string{
-	log.DebugLevel: "•",
-	log.InfoLevel:  "•",
-	log.WarnLevel:  "•",
-	log.ErrorLevel: "⨯",
-	log.FatalLevel: "⨯",
+	DebugLevel: "•",
+	InfoLevel:  "•",
+	WarnLevel:  "•",
+	ErrorLevel: "⨯",
+	FatalLevel: "⨯",
 }
 
-// Handler implementation.
-type Handler struct {
+// CLI implementation.
+type CLI struct {
 	mu     sync.Mutex
 	Writer io.Writer
 
@@ -43,32 +38,32 @@ type Handler struct {
 const defaultPadding = 2
 
 // New handler.
-func New(w io.Writer) *Handler {
+func New(w io.Writer) *CLI {
 	if f, ok := w.(*os.File); ok {
-		return &Handler{
+		return &CLI{
 			Writer:  f,
 			Padding: defaultPadding,
 		}
 	}
 
-	return &Handler{
+	return &CLI{
 		Writer:  w,
 		Padding: defaultPadding,
 	}
 }
 
 // ResetPadding resets the padding to default.
-func (h *Handler) ResetPadding() {
+func (h *CLI) ResetPadding() {
 	h.Padding = defaultPadding
 }
 
 // IncreasePadding increases the padding 1 times.
-func (h *Handler) IncreasePadding() {
+func (h *CLI) IncreasePadding() {
 	h.Padding += defaultPadding
 }
 
-// HandleLog implements log.Handler.
-func (h *Handler) HandleLog(e *log.Entry) error {
+// HandleLog implements Handler.
+func (h *CLI) HandleLog(e *Entry) error {
 	style := Styles[e.Level]
 	level := Strings[e.Level]
 	names := e.Fields.Names()
@@ -96,7 +91,7 @@ func (h *Handler) HandleLog(e *log.Entry) error {
 	return nil
 }
 
-func (h *Handler) padding(m string) int {
+func (h *CLI) padding(m string) int {
 	l := h.Padding + 25 - len(m)
 	if l >= defaultPadding {
 		return l

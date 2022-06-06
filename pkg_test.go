@@ -1,15 +1,17 @@
 package log_test
 
 import (
+	"bytes"
 	"errors"
+	"flag"
 	"fmt"
+	"os"
+	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 
 	"github.com/caarlos0/log"
-	"github.com/caarlos0/log/handlers/cli"
-	"github.com/caarlos0/log/handlers/memory"
-	"github.com/matryer/is"
 )
 
 type Pet struct {
@@ -24,32 +26,9 @@ func (p *Pet) Fields() log.Fields {
 	}
 }
 
-func TestInfo(t *testing.T) {
-	h := memory.New()
-	log.SetHandler(h)
-
-	log.Infof("logged in %s", "Tobi")
-
-	e := h.Entries[0]
-	is := is.New(t)
-	is.Equal(e.Message, "logged in Tobi")
-	is.Equal(e.Level, log.InfoLevel)
-}
-
-func TestFielder(t *testing.T) {
-	h := memory.New()
-	log.SetHandler(h)
-
-	pet := &Pet{"Tobi", 3}
-	log.WithFields(pet).Info("add pet")
-
-	e := h.Entries[0]
-	is := is.New(t)
-	is.Equal(log.Fields{"name": "Tobi", "age": 3}, e.Fields)
-}
-
 func TestRootLogOptions(t *testing.T) {
-	log.SetHandler(cli.Default)
+	var out bytes.Buffer
+	log.SetHandler(log.New(&out))
 	log.SetLevel(log.DebugLevel)
 	log.SetLevelFromString("info")
 	log.WithDuration(time.Second).Info("a")
@@ -63,6 +42,9 @@ func TestRootLogOptions(t *testing.T) {
 	log.Error("error")
 	log.Errorf("warn %d", 1)
 	log.WithField("foo", "bar").Info("foo")
+	pet := &Pet{"Tobi", 3}
+	log.WithFields(pet).Info("add pet")
+	requireEqualOutput(t, out.Bytes())
 }
 
 // Unstructured logging is supported, but not recommended since it is hard to query.
@@ -88,4 +70,35 @@ func Example_multipleFields() {
 		"file": "sloth.png",
 		"type": "image/png",
 	}).Info("upload")
+}
+
+var update = flag.Bool("update", false, "update .golden files")
+
+func requireEqualOutput(tb testing.TB, bts []byte) {
+	tb.Helper()
+
+	golden := "testdata/" + tb.Name() + ".golden"
+	if *update {
+		if err := os.MkdirAll(filepath.Dir(golden), 0o755); err != nil {
+			tb.Fatal(err)
+		}
+		if err := os.WriteFile(golden, bts, 0o600); err != nil {
+			tb.Fatal(err)
+		}
+	}
+
+	gbts, err := os.ReadFile(golden)
+	if err != nil {
+		tb.Fatal(err)
+	}
+
+	sg := formatEscapes(string(gbts))
+	so := formatEscapes(string(bts))
+	if sg != so {
+		tb.Fatalf("output do not match:\ngot:\n%s\n\nexpected:\n%s\n\n", so, sg)
+	}
+}
+
+func formatEscapes(str string) string {
+	return strings.ReplaceAll(str, "\x1b", "\\x1b")
 }

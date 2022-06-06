@@ -1,10 +1,13 @@
 package log
 
-import "time"
+import (
+	"os"
+	"time"
+)
 
 // singletons ftw?
 var Log Interface = &Logger{
-	Handler: HandlerFunc(handleStdLog),
+	Handler: New(os.Stderr),
 	Level:   InfoLevel,
 }
 

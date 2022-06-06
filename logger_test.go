@@ -1,115 +1,77 @@
 package log_test
 
 import (
+	"bytes"
 	"fmt"
-	"reflect"
 	"testing"
 
 	"github.com/caarlos0/log"
-	"github.com/caarlos0/log/handlers/discard"
-	"github.com/caarlos0/log/handlers/memory"
-	"github.com/matryer/is"
 )
 
 func TestLogger_printf(t *testing.T) {
-	h := memory.New()
-
+	var out bytes.Buffer
 	l := &log.Logger{
-		Handler: h,
+		Handler: log.New(&out),
 		Level:   log.InfoLevel,
 	}
 
 	l.Infof("logged in %s", "Tobi")
-
-	e := h.Entries[0]
-	is := is.New(t)
-	is.Equal(e.Message, "logged in Tobi")
-	is.Equal(e.Level, log.InfoLevel)
+	requireEqualOutput(t, out.Bytes())
 }
 
 func TestLogger_levels(t *testing.T) {
-	h := memory.New()
-
+	var out bytes.Buffer
 	l := &log.Logger{
-		Handler: h,
+		Handler: log.New(&out),
 		Level:   log.InfoLevel,
 	}
 
 	l.Debug("uploading")
 	l.Info("upload complete")
-
-	is := is.New(t)
-	is.Equal(1, len(h.Entries))
-
-	e := h.Entries[0]
-	is.Equal(e.Message, "upload complete")
-	is.Equal(e.Level, log.InfoLevel)
+	requireEqualOutput(t, out.Bytes())
 }
 
 func TestLogger_WithFields(t *testing.T) {
-	h := memory.New()
-
+	var out bytes.Buffer
 	l := &log.Logger{
-		Handler: h,
+		Handler: log.New(&out),
 		Level:   log.InfoLevel,
 	}
 
 	ctx := l.WithFields(log.Fields{"file": "sloth.png"})
 	ctx.Debug("uploading")
 	ctx.Info("upload complete")
-
-	is := is.New(t)
-	is.Equal(1, len(h.Entries))
-
-	e := h.Entries[0]
-	is.Equal(e.Message, "upload complete")
-	is.Equal(e.Level, log.InfoLevel)
-	is.Equal(log.Fields{"file": "sloth.png"}, e.Fields)
+	requireEqualOutput(t, out.Bytes())
 }
 
 func TestLogger_WithField(t *testing.T) {
-	h := memory.New()
-
+	var out bytes.Buffer
 	l := &log.Logger{
-		Handler: h,
+		Handler: log.New(&out),
 		Level:   log.InfoLevel,
 	}
 
 	ctx := l.WithField("file", "sloth.png").WithField("user", "Tobi")
 	ctx.Debug("uploading")
 	ctx.Info("upload complete")
-
-	is := is.New(t)
-	is.Equal(1, len(h.Entries))
-
-	e := h.Entries[0]
-	is.Equal(e.Message, "upload complete")
-	is.Equal(e.Level, log.InfoLevel)
-	is.Equal(log.Fields{"file": "sloth.png", "user": "Tobi"}, e.Fields)
+	requireEqualOutput(t, out.Bytes())
 }
 
 func TestLogger_HandlerFunc(t *testing.T) {
-	h := memory.New()
-	f := func(e *log.Entry) error {
-		return h.HandleLog(e)
-	}
-
+	var out bytes.Buffer
 	l := &log.Logger{
-		Handler: log.HandlerFunc(f),
+		Handler: log.New(&out),
 		Level:   log.InfoLevel,
 	}
 
 	l.Infof("logged in %s", "Tobi")
-
-	e := h.Entries[0]
-	is := is.New(t)
-	is.Equal(e.Message, "logged in Tobi")
-	is.Equal(e.Level, log.InfoLevel)
+	requireEqualOutput(t, out.Bytes())
 }
 
 func BenchmarkLogger_small(b *testing.B) {
+	var out bytes.Buffer
 	l := &log.Logger{
-		Handler: discard.New(),
+		Handler: log.New(&out),
 		Level:   log.InfoLevel,
 	}
 
@@ -119,8 +81,9 @@ func BenchmarkLogger_small(b *testing.B) {
 }
 
 func BenchmarkLogger_medium(b *testing.B) {
+	var out bytes.Buffer
 	l := &log.Logger{
-		Handler: discard.New(),
+		Handler: log.New(&out),
 		Level:   log.InfoLevel,
 	}
 
@@ -134,8 +97,9 @@ func BenchmarkLogger_medium(b *testing.B) {
 }
 
 func BenchmarkLogger_large(b *testing.B) {
+	var out bytes.Buffer
 	l := &log.Logger{
-		Handler: discard.New(),
+		Handler: log.New(&out),
 		Level:   log.InfoLevel,
 	}
 
@@ -157,9 +121,4 @@ func BenchmarkLogger_large(b *testing.B) {
 			}).
 			WithError(err).Error("upload failed")
 	}
-}
-
-func isType(tb testing.TB, a, b any) {
-	tb.Helper()
-	is.New(tb).Equal(reflect.TypeOf(a), reflect.TypeOf(b))
 }
