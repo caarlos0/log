@@ -49,6 +49,7 @@ func TestFielder(t *testing.T) {
 }
 
 func TestRootLogOptions(t *testing.T) {
+	log.SetHandler(cli.Default)
 	log.SetLevel(log.DebugLevel)
 	log.SetLevelFromString("info")
 	log.WithDuration(time.Second).Info("a")
@@ -61,7 +62,6 @@ func TestRootLogOptions(t *testing.T) {
 	log.Warnf("warn %d", 1)
 	log.Error("error")
 	log.Errorf("warn %d", 1)
-	log.SetHandler(cli.Default)
 	log.WithField("foo", "bar").Info("foo")
 }
 
