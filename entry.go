@@ -28,6 +28,16 @@ func NewEntry(log *Logger) *Entry {
 	}
 }
 
+// ResetPadding resets the padding to default.
+func (e *Entry) ResetPadding() {
+	e.Logger.ResetPadding()
+}
+
+// IncreasePadding increases the padding 1 times.
+func (e *Entry) IncreasePadding() {
+	e.Logger.IncreasePadding()
+}
+
 // WithFields returns a new entry with `fields` set.
 func (e *Entry) WithFields(fields Fielder) *Entry {
 	f := []Fields{}

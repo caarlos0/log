@@ -36,16 +36,6 @@ func (f Fields) Names() (v []string) {
 	return
 }
 
-// The HandlerFunc type is an adapter to allow the use of ordinary functions as
-// log handlers. If f is a function with the appropriate signature,
-// HandlerFunc(f) is a Handler object that calls f.
-type HandlerFunc func(*Entry) error
-
-// HandleLog calls f(e).
-func (f HandlerFunc) HandleLog(e *Entry) error {
-	return f(e)
-}
-
 // Handler is used to handle log events, outputting them to
 // stdio or sending them to remote services. See the "handlers"
 // directory for implementations.
@@ -53,12 +43,24 @@ func (f HandlerFunc) HandleLog(e *Entry) error {
 // It is left up to Handlers to implement thread-safety.
 type Handler interface {
 	HandleLog(*Entry) error
+	ResetPadding()
+	IncreasePadding()
 }
 
 // Logger represents a logger with configurable Level and Handler.
 type Logger struct {
 	Handler Handler
 	Level   Level
+}
+
+// ResetPadding resets the padding to default.
+func (l *Logger) ResetPadding() {
+	l.Handler.ResetPadding()
+}
+
+// IncreasePadding increases the padding 1 times.
+func (l *Logger) IncreasePadding() {
+	l.Handler.IncreasePadding()
 }
 
 // WithFields returns a new entry with `fields` set.

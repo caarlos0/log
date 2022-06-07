@@ -32,6 +32,16 @@ func SetLevelFromString(s string) {
 	}
 }
 
+// ResetPadding resets the padding to default.
+func ResetPadding() {
+	Log.ResetPadding()
+}
+
+// IncreasePadding increases the padding 1 times.
+func IncreasePadding() {
+	Log.IncreasePadding()
+}
+
 // WithFields returns a new entry with `fields` set.
 func WithFields(fields Fielder) *Entry {
 	return Log.WithFields(fields)

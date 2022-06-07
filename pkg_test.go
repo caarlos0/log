@@ -40,6 +40,9 @@ func TestRootLogOptions(t *testing.T) {
 	log.Error("error")
 	log.Errorf("warn %d", 1)
 	log.WithField("foo", "bar").Info("foo")
+	log.IncreasePadding()
+	log.Info("increased")
+	log.ResetPadding()
 	pet := &Pet{"Tobi", 3}
 	log.WithFields(pet).Info("add pet")
 	requireEqualOutput(t, out.Bytes())
