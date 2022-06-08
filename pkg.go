@@ -1,13 +1,18 @@
 package log
 
 import (
+	"io"
 	"os"
 )
 
 // singletons ftw?
-var Log Interface = &Logger{
-	Handler: New(os.Stderr),
-	Level:   InfoLevel,
+var Log Interface = New(os.Stderr)
+
+func New(w io.Writer) *Logger {
+	return &Logger{
+		Handler: newCLI(w),
+		Level:   InfoLevel,
+	}
 }
 
 // SetHandler sets the handler. This is not thread-safe.
@@ -40,6 +45,11 @@ func ResetPadding() {
 // IncreasePadding increases the padding 1 times.
 func IncreasePadding() {
 	Log.IncreasePadding()
+}
+
+// DecreasePadding decreases the padding 1 times.
+func DecreasePadding() {
+	Log.DecreasePadding()
 }
 
 // WithFields returns a new entry with `fields` set.

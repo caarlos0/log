@@ -27,7 +27,7 @@ func (p *Pet) Fields() log.Fields {
 
 func TestRootLogOptions(t *testing.T) {
 	var out bytes.Buffer
-	log.SetHandler(log.New(&out))
+	log.Log = log.New(&out)
 	log.SetLevel(log.DebugLevel)
 	log.SetLevelFromString("info")
 	log.WithError(fmt.Errorf("here")).Info("a")
@@ -45,6 +45,7 @@ func TestRootLogOptions(t *testing.T) {
 	log.ResetPadding()
 	pet := &Pet{"Tobi", 3}
 	log.WithFields(pet).Info("add pet")
+	log.SetHandler(nil)
 	requireEqualOutput(t, out.Bytes())
 }
 
@@ -93,7 +94,7 @@ func requireEqualOutput(tb testing.TB, in []byte) {
 	if err != nil {
 		tb.Fatal(err)
 	}
-	gbts = useLinuxEOL(bts)
+	gbts = useLinuxEOL(gbts)
 
 	if !bytes.Equal(bts, gbts) {
 		sg := format(string(gbts))

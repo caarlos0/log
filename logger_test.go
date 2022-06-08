@@ -10,21 +10,14 @@ import (
 
 func TestLogger_printf(t *testing.T) {
 	var out bytes.Buffer
-	l := &log.Logger{
-		Handler: log.New(&out),
-		Level:   log.InfoLevel,
-	}
-
+	l := log.New(&out)
 	l.Infof("logged in %s", "Tobi")
 	requireEqualOutput(t, out.Bytes())
 }
 
 func TestLogger_levels(t *testing.T) {
 	var out bytes.Buffer
-	l := &log.Logger{
-		Handler: log.New(&out),
-		Level:   log.InfoLevel,
-	}
+	l := log.New(&out)
 
 	l.Debug("uploading")
 	l.Info("upload complete")
@@ -33,10 +26,7 @@ func TestLogger_levels(t *testing.T) {
 
 func TestLogger_WithFields(t *testing.T) {
 	var out bytes.Buffer
-	l := &log.Logger{
-		Handler: log.New(&out),
-		Level:   log.InfoLevel,
-	}
+	l := log.New(&out)
 
 	ctx := l.WithFields(log.Fields{"file": "sloth.png"})
 	ctx.Debug("uploading")
@@ -46,10 +36,7 @@ func TestLogger_WithFields(t *testing.T) {
 
 func TestLogger_WithField(t *testing.T) {
 	var out bytes.Buffer
-	l := &log.Logger{
-		Handler: log.New(&out),
-		Level:   log.InfoLevel,
-	}
+	l := log.New(&out)
 
 	ctx := l.WithField("file", "sloth.png").WithField("user", "Tobi")
 	ctx.Debug("uploading")
@@ -59,10 +46,7 @@ func TestLogger_WithField(t *testing.T) {
 
 func TestLogger_HandlerFunc(t *testing.T) {
 	var out bytes.Buffer
-	l := &log.Logger{
-		Handler: log.New(&out),
-		Level:   log.InfoLevel,
-	}
+	l := log.New(&out)
 
 	l.Infof("logged in %s", "Tobi")
 	requireEqualOutput(t, out.Bytes())
@@ -70,10 +54,7 @@ func TestLogger_HandlerFunc(t *testing.T) {
 
 func BenchmarkLogger_small(b *testing.B) {
 	var out bytes.Buffer
-	l := &log.Logger{
-		Handler: log.New(&out),
-		Level:   log.InfoLevel,
-	}
+	l := log.New(&out)
 
 	for i := 0; i < b.N; i++ {
 		l.Info("login")
@@ -82,10 +63,7 @@ func BenchmarkLogger_small(b *testing.B) {
 
 func BenchmarkLogger_medium(b *testing.B) {
 	var out bytes.Buffer
-	l := &log.Logger{
-		Handler: log.New(&out),
-		Level:   log.InfoLevel,
-	}
+	l := log.New(&out)
 
 	for i := 0; i < b.N; i++ {
 		l.WithFields(log.Fields{
@@ -98,10 +76,7 @@ func BenchmarkLogger_medium(b *testing.B) {
 
 func BenchmarkLogger_large(b *testing.B) {
 	var out bytes.Buffer
-	l := &log.Logger{
-		Handler: log.New(&out),
-		Level:   log.InfoLevel,
-	}
+	l := log.New(&out)
 
 	err := fmt.Errorf("boom")
 

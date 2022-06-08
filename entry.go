@@ -38,6 +38,11 @@ func (e *Entry) IncreasePadding() {
 	e.Logger.IncreasePadding()
 }
 
+// DecreasePadding decreases the padding 1 times.
+func (e *Entry) DecreasePadding() {
+	e.Logger.DecreasePadding()
+}
+
 // WithFields returns a new entry with `fields` set.
 func (e *Entry) WithFields(fields Fielder) *Entry {
 	f := []Fields{}

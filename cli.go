@@ -37,8 +37,7 @@ type CLI struct {
 
 const defaultPadding = 2
 
-// New handler.
-func New(w io.Writer) *CLI {
+func newCLI(w io.Writer) *CLI {
 	if f, ok := w.(*os.File); ok {
 		return &CLI{
 			Writer:  f,
@@ -60,6 +59,11 @@ func (h *CLI) ResetPadding() {
 // IncreasePadding increases the padding 1 times.
 func (h *CLI) IncreasePadding() {
 	h.Padding += defaultPadding
+}
+
+// DecreasePadding decreases the padding 1 times.
+func (h *CLI) DecreasePadding() {
+	h.Padding -= defaultPadding
 }
 
 // HandleLog implements Handler.

@@ -17,4 +17,5 @@ type Interface interface {
 	Fatalf(string, ...interface{})
 	ResetPadding()
 	IncreasePadding()
+	DecreasePadding()
 }

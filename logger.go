@@ -45,6 +45,7 @@ type Handler interface {
 	HandleLog(*Entry) error
 	ResetPadding()
 	IncreasePadding()
+	DecreasePadding()
 }
 
 // Logger represents a logger with configurable Level and Handler.
@@ -61,6 +62,11 @@ func (l *Logger) ResetPadding() {
 // IncreasePadding increases the padding 1 times.
 func (l *Logger) IncreasePadding() {
 	l.Handler.IncreasePadding()
+}
+
+// DecreasePadding decreases the padding 1 times.
+func (l *Logger) DecreasePadding() {
+	l.Handler.DecreasePadding()
 }
 
 // WithFields returns a new entry with `fields` set.
