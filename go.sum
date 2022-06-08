@@ -1,5 +1,7 @@
-github.com/charmbracelet/lipgloss v0.5.1-0.20220601125546-d8aa337605e4 h1:D05v48Cydf/tMRLF6XfVFllq3RuE8NNjUjPxCTFztus=
-github.com/charmbracelet/lipgloss v0.5.1-0.20220601125546-d8aa337605e4/go.mod h1:oeOviPRUqBGhrqA9R1oYpZdT335eak4BXwMyWneV0eQ=
+github.com/aymanbagabas/go-osc52 v1.0.3 h1:DTwqENW7X9arYimJrPeGZcV0ln14sGMt3pHZspWD+Mg=
+github.com/aymanbagabas/go-osc52 v1.0.3/go.mod h1:zT8H+Rk4VSabYN90pWyugflM3ZhpTZNC7cASDfUCdT4=
+github.com/charmbracelet/lipgloss v0.5.1-0.20220604171933-77aae4ab0bf5 h1:FHeFmaVqTDMJSzaIYT8Dk4MjY8idNhO/+RWq5eITRFU=
+github.com/charmbracelet/lipgloss v0.5.1-0.20220604171933-77aae4ab0bf5/go.mod h1:zVjS7jlggirpJYwsdaMKFhT+0Y1pFdQGS9x7GIz9ov4=
 github.com/lucasb-eyer/go-colorful v1.2.0 h1:1nnpGOrhyZZuNyfu1QjKiUICQ74+3FNCN69Aj6K7nkY=
 github.com/lucasb-eyer/go-colorful v1.2.0/go.mod h1:R4dSotOR9KMtayYi1e77YzuveK+i7ruzyGqttikkLy0=
 github.com/matryer/is v1.4.0 h1:sosSmIWwkYITGrxZ25ULNDeKiMNzFSr4V/eqBQP0PeE=
@@ -11,10 +13,12 @@ github.com/mattn/go-runewidth v0.0.13 h1:lTGmDsbAYt5DmK6OnoV7EuIF1wEIFAcxld6ypU4
 github.com/mattn/go-runewidth v0.0.13/go.mod h1:Jdepj2loyihRzMpdS35Xk/zdY8IAYHsh153qUoGf23w=
 github.com/muesli/reflow v0.2.1-0.20210115123740-9e1d0d53df68 h1:y1p/ycavWjGT9FnmSjdbWUlLGvcxrY0Rw3ATltrxOhk=
 github.com/muesli/reflow v0.2.1-0.20210115123740-9e1d0d53df68/go.mod h1:Xk+z4oIWdQqJzsxyjgl3P22oYZnHdZ8FFTHAQQt5BMQ=
-github.com/muesli/termenv v0.11.1-0.20220204194139-01dd0df73b0b h1:TSLs+BN22VWUvfk0O7l2nkK8CN3AW77IKY5+9F+ESLg=
-github.com/muesli/termenv v0.11.1-0.20220204194139-01dd0df73b0b/go.mod h1:Bd5NYQ7pd+SrtBSrSNoBBmXlcY8+Xj4BMJgh8qcZrvs=
+github.com/muesli/termenv v0.12.1-0.20220604163637-eddc39a244f4/go.mod h1:bN6sPNtkiahdhHv2Xm6RGU16LSCxfbIZvMfqjOCfrR4=
+github.com/muesli/termenv v0.12.1-0.20220606102431-9500d1649068 h1:Tg+qMMarOW1WJTM6xh8GweXRIvByM4Mtj6QTO6SB7EI=
+github.com/muesli/termenv v0.12.1-0.20220606102431-9500d1649068/go.mod h1:bN6sPNtkiahdhHv2Xm6RGU16LSCxfbIZvMfqjOCfrR4=
 github.com/rivo/uniseg v0.1.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=
 github.com/rivo/uniseg v0.2.0 h1:S1pD9weZBuJdFmowNwbpi7BJ8TNftyUImj/0WQi72jY=
 github.com/rivo/uniseg v0.2.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=
-golang.org/x/sys v0.0.0-20210630005230-0f9fa26af87c h1:F1jZWGFhYfh0Ci55sIpILtKKK8p3i2/krTr0H1rg74I=
 golang.org/x/sys v0.0.0-20210630005230-0f9fa26af87c/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
+golang.org/x/sys v0.0.0-20220209214540-3681064d5158 h1:rm+CHSpPEEW2IsXUib1ThaHIjuBVZjxNgSKmBLFfD4c=
+golang.org/x/sys v0.0.0-20220209214540-3681064d5158/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
