@@ -11,7 +11,13 @@ import (
 	"testing"
 
 	"github.com/caarlos0/log"
+	"github.com/charmbracelet/lipgloss"
+	"github.com/muesli/termenv"
 )
+
+func init() {
+	lipgloss.SetColorProfile(termenv.ANSI256)
+}
 
 type Pet struct {
 	Name string
