@@ -5,6 +5,7 @@ import (
 	"io"
 	stdlog "log"
 	"sort"
+	"strings"
 	"sync"
 
 	"github.com/charmbracelet/lipgloss"
@@ -84,7 +85,6 @@ func (l *Logger) DecreasePadding() {
 	l.Padding -= defaultPadding
 }
 
-// handleLog implements Handler.
 func (l *Logger) handleLog(e *Entry) error {
 	style := Styles[e.Level]
 	level := Strings[e.Level]
@@ -93,32 +93,18 @@ func (l *Logger) handleLog(e *Entry) error {
 	l.mu.Lock()
 	defer l.mu.Unlock()
 
-	fmt.Fprintf(
-		l.Writer,
-		"%s %s",
+	line := fmt.Sprintf(
+		"%s %-25s",
 		style.Bold(true).PaddingLeft(l.Padding).Render(level),
 		e.Message,
 	)
 
-	if len(names) > 0 {
-		pad := l.padding(e.Message)
-		fmt.Fprint(l.Writer, lipgloss.NewStyle().PaddingLeft(pad).Render(""))
-	}
-
 	for _, name := range names {
-		fmt.Fprintf(l.Writer, " %s=%v", style.Render(name), e.Fields.Get(name))
+		line += fmt.Sprintf(" %s=%v", style.Render(name), e.Fields.Get(name))
 	}
 
-	fmt.Fprintln(l.Writer)
+	fmt.Fprintln(l.Writer, strings.TrimRight(line, " "))
 	return nil
-}
-
-func (l *Logger) padding(m string) int {
-	len := l.Padding + 25 - len(m)
-	if len >= defaultPadding {
-		return len
-	}
-	return defaultPadding
 }
 
 // WithFields returns a new entry with `fields` set.
