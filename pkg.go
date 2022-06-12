@@ -8,18 +8,12 @@ import (
 // singletons ftw?
 var Log Interface = New(os.Stderr)
 
+// New creates a new logger.
 func New(w io.Writer) *Logger {
 	return &Logger{
-		Handler: newCLI(w),
+		Writer:  w,
+		Padding: defaultPadding,
 		Level:   InfoLevel,
-	}
-}
-
-// SetHandler sets the handler. This is not thread-safe.
-// The default handler outputs to the stdlib log.
-func SetHandler(h Handler) {
-	if logger, ok := Log.(*Logger); ok {
-		logger.Handler = h
 	}
 }
 

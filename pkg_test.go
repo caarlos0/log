@@ -51,7 +51,6 @@ func TestRootLogOptions(t *testing.T) {
 	log.ResetPadding()
 	pet := &Pet{"Tobi", 3}
 	log.WithFields(pet).Info("add pet")
-	log.SetHandler(nil)
 	requireEqualOutput(t, out.Bytes())
 }
 

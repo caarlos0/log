@@ -1,9 +1,34 @@
 package log
 
 import (
+	"fmt"
+	"io"
 	stdlog "log"
 	"sort"
+	"sync"
+
+	"github.com/charmbracelet/lipgloss"
 )
+
+// Styles mapping.
+var Styles = [...]lipgloss.Style{
+	DebugLevel: lipgloss.NewStyle().Foreground(lipgloss.Color("15")),
+	InfoLevel:  lipgloss.NewStyle().Foreground(lipgloss.Color("12")),
+	WarnLevel:  lipgloss.NewStyle().Foreground(lipgloss.Color("11")),
+	ErrorLevel: lipgloss.NewStyle().Foreground(lipgloss.Color("9")),
+	FatalLevel: lipgloss.NewStyle().Foreground(lipgloss.Color("9")),
+}
+
+// Strings mapping.
+var Strings = [...]string{
+	DebugLevel: "•",
+	InfoLevel:  "•",
+	WarnLevel:  "•",
+	ErrorLevel: "⨯",
+	FatalLevel: "⨯",
+}
+
+const defaultPadding = 2
 
 // assert interface compliance.
 var _ Interface = (*Logger)(nil)
@@ -36,37 +61,64 @@ func (f Fields) Names() (v []string) {
 	return
 }
 
-// Handler is used to handle log events, outputting them to
-// stdio or sending them to remote services. See the "handlers"
-// directory for implementations.
-//
-// It is left up to Handlers to implement thread-safety.
-type Handler interface {
-	HandleLog(*Entry) error
-	ResetPadding()
-	IncreasePadding()
-	DecreasePadding()
-}
-
 // Logger represents a logger with configurable Level and Handler.
 type Logger struct {
-	Handler Handler
+	mu      sync.Mutex
+	Writer  io.Writer
 	Level   Level
+	Padding int
 }
 
 // ResetPadding resets the padding to default.
 func (l *Logger) ResetPadding() {
-	l.Handler.ResetPadding()
+	l.Padding = defaultPadding
 }
 
 // IncreasePadding increases the padding 1 times.
 func (l *Logger) IncreasePadding() {
-	l.Handler.IncreasePadding()
+	l.Padding += defaultPadding
 }
 
 // DecreasePadding decreases the padding 1 times.
 func (l *Logger) DecreasePadding() {
-	l.Handler.DecreasePadding()
+	l.Padding -= defaultPadding
+}
+
+// handleLog implements Handler.
+func (l *Logger) handleLog(e *Entry) error {
+	style := Styles[e.Level]
+	level := Strings[e.Level]
+	names := e.Fields.Names()
+
+	l.mu.Lock()
+	defer l.mu.Unlock()
+
+	fmt.Fprintf(
+		l.Writer,
+		"%s %s",
+		style.Bold(true).PaddingLeft(l.Padding).Render(level),
+		e.Message,
+	)
+
+	if len(names) > 0 {
+		pad := l.padding(e.Message)
+		fmt.Fprint(l.Writer, lipgloss.NewStyle().PaddingLeft(pad).Render(""))
+	}
+
+	for _, name := range names {
+		fmt.Fprintf(l.Writer, " %s=%v", style.Render(name), e.Fields.Get(name))
+	}
+
+	fmt.Fprintln(l.Writer)
+	return nil
+}
+
+func (l *Logger) padding(m string) int {
+	len := l.Padding + 25 - len(m)
+	if len >= defaultPadding {
+		return len
+	}
+	return defaultPadding
 }
 
 // WithFields returns a new entry with `fields` set.
@@ -145,7 +197,7 @@ func (l *Logger) log(level Level, e *Entry, msg string) {
 		return
 	}
 
-	if err := l.Handler.HandleLog(e.finalize(level, msg)); err != nil {
+	if err := l.handleLog(e.finalize(level, msg)); err != nil {
 		stdlog.Printf("error logging: %s", err)
 	}
 }
