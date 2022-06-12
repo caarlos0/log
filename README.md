@@ -6,7 +6,8 @@ A Colorful CLI logger.
 [![Coverage Status](https://img.shields.io/codecov/c/gh/caarlos0/log.svg?logo=codecov&style=for-the-badge)](https://codecov.io/gh/caarlos0/log)
 [![](http://img.shields.io/badge/godoc-reference-5272B4.svg?style=for-the-badge)](https://pkg.go.dev/github.com/caarlos0/log)
 
-<img width="1314" alt="image" src="https://user-images.githubusercontent.com/245435/172516760-9f729aed-5111-4cf0-a88f-fe8445850d48.png">
+<img width="1149" alt="image" src="https://user-images.githubusercontent.com/245435/173212535-414591a2-276f-4de0-9310-2526798df580.png">
+
 
 ## Acknowledgements
 
