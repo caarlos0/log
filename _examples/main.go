@@ -11,7 +11,7 @@ import (
 
 func init() {
 	if os.Getenv("CI") != "" {
-		lipgloss.SetColorProfile(termenv.TrueColor)
+		lipgloss.SetColorProfile(termenv.ANSI)
 	}
 }
 
