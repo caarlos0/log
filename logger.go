@@ -5,7 +5,6 @@ import (
 	"io"
 	stdlog "log"
 	"sort"
-	"strings"
 	"sync"
 
 	"github.com/charmbracelet/lipgloss"
@@ -93,18 +92,29 @@ func (l *Logger) handleLog(e *Entry) error {
 	l.mu.Lock()
 	defer l.mu.Unlock()
 
-	line := fmt.Sprintf(
-		"%s %-25s",
-		style.Bold(true).PaddingLeft(l.Padding).Render(level),
+	fmt.Fprintf(
+		l.Writer,
+		"%s %-*s",
+		style.Bold(true).Render(
+			fmt.Sprintf("%*s", 1+l.Padding, level),
+		),
+		l.rightPadding(names),
 		e.Message,
 	)
 
 	for _, name := range names {
-		line += fmt.Sprintf(" %s=%v", style.Render(name), e.Fields.Get(name))
+		fmt.Fprintf(l.Writer, " %s=%v", style.Render(name), e.Fields.Get(name))
 	}
 
-	fmt.Fprintln(l.Writer, strings.TrimRight(line, " "))
+	fmt.Fprintln(l.Writer)
 	return nil
+}
+
+func (l *Logger) rightPadding(names []string) int {
+	if len(names) == 0 {
+		return 0
+	}
+	return 50 - l.Padding
 }
 
 // WithFields returns a new entry with `fields` set.
