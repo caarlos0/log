@@ -2,18 +2,9 @@ package main
 
 import (
 	"errors"
-	"os"
 
 	"github.com/caarlos0/log"
-	"github.com/charmbracelet/lipgloss"
-	"github.com/muesli/termenv"
 )
-
-func init() {
-	if os.Getenv("CI") != "" {
-		lipgloss.SetColorProfile(termenv.ANSI)
-	}
-}
 
 func main() {
 	log.SetLevel(log.DebugLevel)

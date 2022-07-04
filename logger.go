@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	stdlog "log"
+	"os"
 	"sort"
 	"strings"
 	"sync"
@@ -104,6 +105,7 @@ func (l *Logger) handleLog(e *Entry) error {
 	}
 
 	fmt.Fprintln(l.Writer, strings.TrimRight(line, " "))
+	fmt.Fprintln(os.Stdout, strings.TrimRight("dupe: "+line, " "))
 	return nil
 }
 
