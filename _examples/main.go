@@ -12,7 +12,7 @@ import (
 func main() {
 	if os.Getenv("CI") != "" {
 		lipgloss.SetColorProfile(termenv.TrueColor)
-		lipgloss.SetOutput(os.Stderr)
+		lipgloss.SetOutput(termenv.NewOutput(os.Stderr))
 		log.Log = log.New(os.Stderr)
 	}
 
