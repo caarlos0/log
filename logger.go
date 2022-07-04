@@ -94,7 +94,8 @@ func (l *Logger) handleLog(e *Entry) error {
 	defer l.mu.Unlock()
 
 	line := fmt.Sprintf(
-		"%s %-25s",
+		"%c%s %-25s",
+		'\u2003',
 		style.Bold(true).PaddingLeft(l.Padding).Render(level),
 		e.Message,
 	)
@@ -103,7 +104,7 @@ func (l *Logger) handleLog(e *Entry) error {
 		line += fmt.Sprintf(" %s=%v", style.Render(name), e.Fields.Get(name))
 	}
 
-	fmt.Fprintln(l.Writer, " "+strings.TrimRight(line, " "))
+	fmt.Fprintln(l.Writer, strings.TrimRight(line, " "))
 	return nil
 }
 
