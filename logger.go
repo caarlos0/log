@@ -5,7 +5,6 @@ import (
 	"io"
 	stdlog "log"
 	"sort"
-	"strings"
 	"sync"
 
 	"github.com/charmbracelet/lipgloss"
@@ -93,18 +92,18 @@ func (l *Logger) handleLog(e *Entry) error {
 	l.mu.Lock()
 	defer l.mu.Unlock()
 
-	line := fmt.Sprintf(
-		"%c%s %-25s",
-		'\u2003',
+	fmt.Fprintf(
+		l.Writer,
+		"%s %-25s",
 		style.Bold(true).PaddingLeft(l.Padding).Render(level),
 		e.Message,
 	)
 
 	for _, name := range names {
-		line += fmt.Sprintf(" %s=%v", style.Render(name), e.Fields.Get(name))
+		fmt.Fprintf(l.Writer, " %s=%v", style.Render(name), e.Fields.Get(name))
 	}
 
-	fmt.Fprintln(l.Writer, strings.TrimRight(line, " "))
+	fmt.Fprintln(l.Writer)
 	return nil
 }
 
