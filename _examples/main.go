@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"os"
 
 	"github.com/caarlos0/log"
@@ -11,13 +10,10 @@ import (
 )
 
 func main() {
-	fmt.Println("          prefixed aaa")
-	fmt.Fprintln(os.Stderr, "           prefixed err aaa")
 	if os.Getenv("CI") != "" {
 		lipgloss.SetColorProfile(termenv.TrueColor)
+		log.Log = log.New(os.Stderr)
 	}
-	fmt.Println("          prefixed bbb")
-	fmt.Fprintln(os.Stderr, "           prefixed err bbb")
 
 	log.SetLevel(log.DebugLevel)
 	log.WithField("foo", "bar").Debug("debug")
