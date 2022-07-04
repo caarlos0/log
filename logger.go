@@ -94,8 +94,9 @@ func (l *Logger) handleLog(e *Entry) error {
 	defer l.mu.Unlock()
 
 	line := fmt.Sprintf(
-		"%s %-25s",
-		style.Bold(true).MarginLeft(l.Padding).Render(level),
+		"%s%s %-25s",
+		lipgloss.NewStyle().PaddingLeft(l.Padding).Render(""),
+		style.Bold(true).Render(level),
 		e.Message,
 	)
 
