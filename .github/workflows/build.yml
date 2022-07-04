@@ -28,8 +28,8 @@ jobs:
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-
-      - run: go test -v -failfast -race -coverpkg=./... -covermode=atomic -coverprofile=coverage.txt
       - run: go run _examples/main.go || true
+      - run: go test -v -failfast -race -coverpkg=./... -covermode=atomic -coverprofile=coverage.txt
       - uses: codecov/codecov-action@v3
         if: matrix.os == 'ubuntu-latest'
         with:
