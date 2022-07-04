@@ -95,7 +95,7 @@ func (l *Logger) handleLog(e *Entry) error {
 
 	line := fmt.Sprintf(
 		"%s%s %-25s",
-		lipgloss.NewStyle().PaddingLeft(l.Padding).Render(""),
+		strings.Repeat(" ", l.Padding),
 		style.Bold(true).Render(level),
 		e.Message,
 	)
