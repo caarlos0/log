@@ -28,7 +28,9 @@ jobs:
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-
+      - run: echo "   foo bar"
       - run: go run _examples/main.go || true
+      - run: echo "   foo bar"
       - run: go test -v -failfast -race -coverpkg=./... -covermode=atomic -coverprofile=coverage.txt
       - uses: codecov/codecov-action@v3
         if: matrix.os == 'ubuntu-latest'
