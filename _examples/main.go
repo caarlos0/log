@@ -9,13 +9,13 @@ import (
 	"github.com/muesli/termenv"
 )
 
-func main() {
+func init() {
 	if os.Getenv("CI") != "" {
 		lipgloss.SetColorProfile(termenv.TrueColor)
-		lipgloss.SetOutput(termenv.NewOutput(os.Stderr))
-		log.Log = log.New(os.Stderr)
 	}
+}
 
+func main() {
 	log.SetLevel(log.DebugLevel)
 	log.WithField("foo", "bar").Debug("debug")
 	log.WithField("foo", "bar").Info("info")
