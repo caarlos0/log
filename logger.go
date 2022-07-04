@@ -95,7 +95,7 @@ func (l *Logger) handleLog(e *Entry) error {
 
 	line := fmt.Sprintf(
 		"%s %-25s",
-		style.Bold(true).PaddingLeft(l.Padding).Render(level),
+		style.Bold(true).MarginLeft(l.Padding).Render(level),
 		e.Message,
 	)
 
