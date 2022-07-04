@@ -16,6 +16,7 @@ func init() {
 	if os.Getenv("CI") != "" {
 		lipgloss.SetColorProfile(termenv.TrueColor)
 	}
+	Log = New(os.Stdout)
 }
 
 // New creates a new logger.
