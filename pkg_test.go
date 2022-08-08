@@ -16,7 +16,10 @@ import (
 )
 
 func init() {
-	lipgloss.SetColorProfile(termenv.ANSI256)
+	// enable colored output on github actions et al
+	if os.Getenv("CI") != "" {
+		lipgloss.SetColorProfile(termenv.TrueColor)
+	}
 }
 
 type Pet struct {
