@@ -3,7 +3,7 @@ module github.com/caarlos0/log
 go 1.18
 
 require (
-	github.com/charmbracelet/lipgloss v0.5.1-0.20220615005615-2e17a8a06096
+	github.com/charmbracelet/lipgloss v0.6.0
 	github.com/matryer/is v1.4.0
 	github.com/muesli/termenv v0.12.1-0.20220615005108-4e9068de9898
 )
