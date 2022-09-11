@@ -5,11 +5,10 @@ go 1.18
 require (
 	github.com/charmbracelet/lipgloss v0.6.0
 	github.com/matryer/is v1.4.0
-	github.com/muesli/termenv v0.12.1-0.20220901123159-d729275e0977
+	github.com/muesli/termenv v0.12.0
 )
 
 require (
-	github.com/aymanbagabas/go-osc52 v1.0.3 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
 	github.com/mattn/go-runewidth v0.0.13 // indirect

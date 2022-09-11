@@ -94,9 +94,7 @@ func (l *Logger) handleLog(e *Entry) {
 	fmt.Fprintf(
 		l.Writer,
 		"%s %-*s",
-		style.Bold(true).Render(
-			fmt.Sprintf("%*s", 1+l.Padding, level),
-		),
+		style.Bold(true).Render(fmt.Sprintf("%*s", 1+l.Padding, level)),
 		l.rightPadding(names),
 		e.Message,
 	)
