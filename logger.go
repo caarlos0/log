@@ -11,11 +11,11 @@ import (
 
 // Styles mapping.
 var Styles = [...]lipgloss.Style{
-	DebugLevel: lipgloss.NewStyle().Foreground(lipgloss.Color("15")),
-	InfoLevel:  lipgloss.NewStyle().Foreground(lipgloss.Color("12")),
-	WarnLevel:  lipgloss.NewStyle().Foreground(lipgloss.Color("11")),
-	ErrorLevel: lipgloss.NewStyle().Foreground(lipgloss.Color("9")),
-	FatalLevel: lipgloss.NewStyle().Foreground(lipgloss.Color("9")),
+	DebugLevel: lipgloss.NewStyle().Foreground(lipgloss.Color("15")).Bold(true),
+	InfoLevel:  lipgloss.NewStyle().Foreground(lipgloss.Color("12")).Bold(true),
+	WarnLevel:  lipgloss.NewStyle().Foreground(lipgloss.Color("11")).Bold(true),
+	ErrorLevel: lipgloss.NewStyle().Foreground(lipgloss.Color("9")).Bold(true),
+	FatalLevel: lipgloss.NewStyle().Foreground(lipgloss.Color("9")).Bold(true),
 }
 
 // Strings mapping.
@@ -84,7 +84,7 @@ func (l *Logger) DecreasePadding() {
 }
 
 func (l *Logger) handleLog(e *Entry) {
-	style := Styles[e.Level].Copy().Bold(true)
+	style := Styles[e.Level]
 	level := Strings[e.Level]
 	names := e.Fields.Names()
 
