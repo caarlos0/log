@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 	"testing"
 
 	"github.com/caarlos0/log"
@@ -52,6 +53,18 @@ func TestRootLogOptions(t *testing.T) {
 	pet := &Pet{"Tobi", 3}
 	log.WithFields(pet).Info("add pet")
 	requireEqualOutput(t, out.Bytes())
+}
+
+func TestRace(t *testing.T) {
+	var wg sync.WaitGroup
+	for i := 0; i < 9999; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			log.Infof("a")
+		}()
+	}
+	wg.Wait()
 }
 
 // Unstructured logging is supported, but not recommended since it is hard to query.

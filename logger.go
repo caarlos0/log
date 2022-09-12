@@ -84,7 +84,7 @@ func (l *Logger) DecreasePadding() {
 }
 
 func (l *Logger) handleLog(e *Entry) {
-	style := Styles[e.Level]
+	style := Styles[e.Level].Copy().Bold(true)
 	level := Strings[e.Level]
 	names := e.Fields.Names()
 
@@ -94,7 +94,7 @@ func (l *Logger) handleLog(e *Entry) {
 	fmt.Fprintf(
 		l.Writer,
 		"%s %-*s",
-		style.Bold(true).Render(fmt.Sprintf("%*s", 1+l.Padding, level)),
+		style.Render(fmt.Sprintf("%*s", 1+l.Padding, level)),
 		l.rightPadding(names),
 		e.Message,
 	)
