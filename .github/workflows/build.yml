@@ -11,14 +11,20 @@ on:
 jobs:
   govulncheck:
     uses: caarlos0/meta/.github/workflows/govulncheck.yml@main
+    with:
+      cache: true
+      go-version: '>=1.19.2'
   semgrep:
     uses: caarlos0/meta/.github/workflows/semgrep.yml@main
   ruleguard:
     uses: caarlos0/meta/.github/workflows/ruleguard.yml@main
+    with:
+      cache: true
+      go-version: '>=1.19.2'
   build:
     strategy:
       matrix:
-        go-version: [~1.18]
+        go-version: ['>=1.19.2']
         os: [ ubuntu-latest, macos-latest, windows-latest ]
     runs-on: ${{ matrix.os }}
     steps:
