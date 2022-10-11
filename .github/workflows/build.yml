@@ -21,6 +21,17 @@ jobs:
     with:
       cache: true
       go-version: '>=1.19.2'
+  golangci-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '>=1.19.2'
+          cache: true
+      - uses: actions/checkout@v3
+      - uses: golangci/golangci-lint-action@v3
+        with:
+          skip-go-installation: true
   build:
     strategy:
       matrix:
