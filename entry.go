@@ -33,6 +33,11 @@ func (e *Entry) ResetPadding() {
 	e.Logger.ResetPadding()
 }
 
+// RestorePadding restore the padding previously resetted.
+func (e *Entry) RestorePadding() {
+	e.Logger.RestorePadding()
+}
+
 // IncreasePadding increases the padding 1 times.
 func (e *Entry) IncreasePadding() {
 	e.Logger.IncreasePadding()

@@ -21,5 +21,7 @@ func main() {
 	log.WithField("foo", "bar").Info("info with a more increased padding")
 	log.ResetPadding()
 	log.WithError(errors.New("some error")).Error("error")
+	log.RestorePadding()
+	log.WithField("foo", "bar").Info("info with a restored padding")
 	log.WithError(errors.New("some fatal error")).Fatal("fatal")
 }

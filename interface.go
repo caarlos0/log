@@ -16,6 +16,7 @@ type Interface interface {
 	Errorf(string, ...interface{})
 	Fatalf(string, ...interface{})
 	ResetPadding()
+	RestorePadding()
 	IncreasePadding()
 	DecreasePadding()
 }

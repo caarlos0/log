@@ -62,15 +62,22 @@ func (f Fields) Names() (v []string) {
 
 // Logger represents a logger with configurable Level and Handler.
 type Logger struct {
-	mu      sync.Mutex
-	Writer  io.Writer
-	Level   Level
-	Padding int
+	mu              sync.Mutex
+	Writer          io.Writer
+	Level           Level
+	Padding         int
+	resettedPadding int
 }
 
 // ResetPadding resets the padding to default.
 func (l *Logger) ResetPadding() {
+	l.resettedPadding = l.Padding
 	l.Padding = defaultPadding
+}
+
+// RestorePadding restore the padding previously resetted.
+func (l *Logger) RestorePadding() {
+	l.Padding = l.resettedPadding
 }
 
 // IncreasePadding increases the padding 1 times.

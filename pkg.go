@@ -36,6 +36,11 @@ func ResetPadding() {
 	Log.ResetPadding()
 }
 
+// RestorePadding restore the padding previously resetted.
+func RestorePadding() {
+	Log.RestorePadding()
+}
+
 // IncreasePadding increases the padding 1 times.
 func IncreasePadding() {
 	Log.IncreasePadding()
