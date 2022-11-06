@@ -5,6 +5,7 @@ type Interface interface {
 	WithFields(Fielder) *Entry
 	WithField(string, interface{}) *Entry
 	WithError(error) *Entry
+	WithoutPadding() *Entry
 	Debug(string)
 	Info(string)
 	Warn(string)

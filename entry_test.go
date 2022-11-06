@@ -2,6 +2,7 @@ package log
 
 import (
 	"fmt"
+	"io"
 	"testing"
 
 	"github.com/matryer/is"
@@ -9,7 +10,7 @@ import (
 
 func TestEntry_WithFields(t *testing.T) {
 	is := is.New(t)
-	a := NewEntry(nil)
+	a := NewEntry(New(io.Discard))
 	is.Equal(a.Fields, nil)
 
 	b := a.WithFields(Fields{"foo": "bar"})
@@ -26,7 +27,7 @@ func TestEntry_WithFields(t *testing.T) {
 
 func TestEntry_WithField(t *testing.T) {
 	is := is.New(t)
-	a := NewEntry(nil)
+	a := NewEntry(New(io.Discard))
 	b := a.WithField("foo", "bar")
 	is.Equal(Fields{}, a.mergedFields())
 	is.Equal(Fields{"foo": "bar"}, b.mergedFields())
@@ -34,7 +35,7 @@ func TestEntry_WithField(t *testing.T) {
 
 func TestEntry_WithError(t *testing.T) {
 	is := is.New(t)
-	a := NewEntry(nil)
+	a := NewEntry(New(io.Discard))
 	b := a.WithError(fmt.Errorf("boom"))
 	is.Equal(Fields{}, a.mergedFields())
 	is.Equal(Fields{"error": "boom"}, b.mergedFields())
@@ -42,7 +43,7 @@ func TestEntry_WithError(t *testing.T) {
 
 func TestEntry_WithError_fields(t *testing.T) {
 	is := is.New(t)
-	a := NewEntry(nil)
+	a := NewEntry(New(io.Discard))
 	b := a.WithError(errFields("boom"))
 	is.Equal(Fields{}, a.mergedFields())
 	is.Equal(Fields{
@@ -53,10 +54,25 @@ func TestEntry_WithError_fields(t *testing.T) {
 
 func TestEntry_WithError_nil(t *testing.T) {
 	is := is.New(t)
-	a := NewEntry(nil)
+	a := NewEntry(New(io.Discard))
 	b := a.WithError(nil)
 	is.Equal(Fields{}, a.mergedFields())
 	is.Equal(Fields{}, b.mergedFields())
+}
+
+func TestEntry_WithoutPadding(t *testing.T) {
+	is := is.New(t)
+	log := New(io.Discard)
+
+	a := NewEntry(log)
+	is.Equal(defaultPadding, a.Padding)
+
+	log.IncreasePadding()
+	b := NewEntry(log)
+	is.Equal(defaultPadding+2, b.Padding)
+
+	c := b.WithoutPadding()
+	is.Equal(defaultPadding, c.Padding)
 }
 
 type errFields string

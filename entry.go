@@ -18,13 +18,15 @@ type Entry struct {
 	Fields  Fields  `json:"fields"`
 	Level   Level   `json:"level"`
 	Message string  `json:"message"`
+	Padding int
 	fields  []Fields
 }
 
 // NewEntry returns a new entry for `log`.
 func NewEntry(log *Logger) *Entry {
 	return &Entry{
-		Logger: log,
+		Logger:  log,
+		Padding: log.Padding,
 	}
 }
 
@@ -49,8 +51,9 @@ func (e *Entry) WithFields(fields Fielder) *Entry {
 	f = append(f, e.fields...)
 	f = append(f, fields.Fields())
 	return &Entry{
-		Logger: e.Logger,
-		fields: f,
+		Logger:  e.Logger,
+		Padding: e.Padding,
+		fields:  f,
 	}
 }
 
@@ -75,6 +78,12 @@ func (e *Entry) WithError(err error) *Entry {
 	}
 
 	return ctx
+}
+
+// WithoutPadding returns entry without padding set to false.
+func (e *Entry) WithoutPadding() *Entry {
+	e.Padding = defaultPadding
+	return e
 }
 
 // Debug level message.
@@ -146,6 +155,7 @@ func (e *Entry) finalize(level Level, msg string) *Entry {
 	return &Entry{
 		Logger:  e.Logger,
 		Fields:  e.mergedFields(),
+		Padding: e.Padding,
 		Level:   level,
 		Message: msg,
 	}

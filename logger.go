@@ -94,7 +94,7 @@ func (l *Logger) handleLog(e *Entry) {
 	fmt.Fprintf(
 		l.Writer,
 		"%s %-*s",
-		style.Render(fmt.Sprintf("%*s", 1+l.Padding, level)),
+		style.Render(fmt.Sprintf("%*s", 1+e.Padding, level)),
 		l.rightPadding(names),
 		e.Message,
 	)
@@ -129,6 +129,11 @@ func (l *Logger) WithField(key string, value interface{}) *Entry {
 // WithError returns a new entry with the "error" set to `err`.
 func (l *Logger) WithError(err error) *Entry {
 	return NewEntry(l).WithError(err)
+}
+
+// WithoutPadding returns a new entry without padding.
+func (l *Logger) WithoutPadding() *Entry {
+	return NewEntry(l).WithoutPadding()
 }
 
 // Debug level message.

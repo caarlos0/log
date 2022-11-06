@@ -49,6 +49,8 @@ func TestRootLogOptions(t *testing.T) {
 	log.WithField("foo", "bar").Info("foo")
 	log.IncreasePadding()
 	log.Info("increased")
+	log.WithoutPadding().Info("without padding")
+	log.Info("increased")
 	log.ResetPadding()
 	pet := &Pet{"Tobi", 3}
 	log.WithFields(pet).Info("add pet")
