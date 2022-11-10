@@ -18,6 +18,7 @@ func main() {
 	log.IncreasePadding()
 	log.WithField("foo", "bar").Info("info with increased padding")
 	log.IncreasePadding()
+	log.WithoutPadding().WithField("foo", "bar").Info("info without padding")
 	log.WithField("foo", "bar").Info("info with a more increased padding")
 	log.ResetPadding()
 	log.WithError(errors.New("some error")).Error("error")
