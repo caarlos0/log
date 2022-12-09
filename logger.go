@@ -131,7 +131,7 @@ func (l *Logger) WithError(err error) *Entry {
 	return NewEntry(l).WithError(err)
 }
 
-// WithoutPadding returns a new entry without padding.
+// WithoutPadding returns a new entry with padding set to default.
 func (l *Logger) WithoutPadding() *Entry {
 	return NewEntry(l).WithoutPadding()
 }
