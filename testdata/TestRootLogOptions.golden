@@ -7,6 +7,6 @@
 [1;91m  ⨯[0m warn 1
 [1;94m  •[0m foo                                              [1;94mfoo[0m=bar
 [1;94m    •[0m increased
-[1;94m  •[0m without padding
+[1;94m  •[0m without padding                                  [1;94mfoo[0m=bar
 [1;94m    •[0m increased
 [1;94m  •[0m add pet                                          [1;94mage[0m=3 [1;94mname[0m=Tobi
