@@ -80,10 +80,13 @@ func (e *Entry) WithError(err error) *Entry {
 	return ctx
 }
 
-// WithoutPadding returns entry without padding set to false.
+// WithoutPadding returns a new entry with padding set to default.
 func (e *Entry) WithoutPadding() *Entry {
-	e.Padding = defaultPadding
-	return e
+	return &Entry{
+		Logger:  e.Logger,
+		Padding: defaultPadding,
+		fields:  e.fields,
+	}
 }
 
 // Debug level message.
