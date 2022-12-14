@@ -95,7 +95,7 @@ func (l *Logger) handleLog(e *Entry) {
 		l.Writer,
 		"%s %-*s",
 		style.Render(fmt.Sprintf("%*s", 1+e.Padding, level)),
-		l.rightPadding(names),
+		l.rightPadding(names, e.Padding),
 		e.Message,
 	)
 
@@ -106,11 +106,11 @@ func (l *Logger) handleLog(e *Entry) {
 	fmt.Fprintln(l.Writer)
 }
 
-func (l *Logger) rightPadding(names []string) int {
+func (l *Logger) rightPadding(names []string, padding int) int {
 	if len(names) == 0 {
 		return 0
 	}
-	return 50 - l.Padding
+	return 50 - padding
 }
 
 // WithFields returns a new entry with `fields` set.
