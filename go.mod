@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/charmbracelet/lipgloss v0.6.0
-	github.com/matryer/is v1.4.0
+	github.com/matryer/is v1.4.1
 	github.com/muesli/termenv v0.14.0
 )
 
