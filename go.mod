@@ -3,9 +3,9 @@ module github.com/caarlos0/log
 go 1.19
 
 require (
-	github.com/charmbracelet/lipgloss v0.7.0
+	github.com/charmbracelet/lipgloss v0.7.1
 	github.com/matryer/is v1.4.1
-	github.com/muesli/termenv v0.15.0
+	github.com/muesli/termenv v0.15.1
 )
 
 require (
