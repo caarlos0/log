@@ -8,6 +8,16 @@ import (
 
 func main() {
 	log.SetLevel(log.DebugLevel)
+	log.
+		WithField("field5", "value5").
+		WithField("field2", "value2").
+		WithField("field1", "value1").
+		WithField("field4", "value4").
+		WithFields(log.Fields{
+			"FOO": "bar",
+		}).
+		WithField("field3", "value3").
+		Info("AQUI")
 	log.WithField("foo", "bar").Debug("debug")
 	log.WithField("foo", "bar").Info("info")
 	log.WithField("foo", "bar").Warn("warn")

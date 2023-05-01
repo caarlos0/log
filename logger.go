@@ -3,7 +3,6 @@ package log
 import (
 	"fmt"
 	"io"
-	"sort"
 	"sync"
 
 	"github.com/charmbracelet/lipgloss"
@@ -50,13 +49,12 @@ func (f Fields) Get(name string) interface{} {
 	return f[name]
 }
 
-// Names returns field names sorted.
+// Names returns field names.
 func (f Fields) Names() (v []string) {
 	for k := range f {
 		v = append(v, k)
 	}
 
-	sort.Strings(v)
 	return
 }
 
