@@ -6,6 +6,7 @@ import (
 	"sync"
 
 	"github.com/charmbracelet/lipgloss"
+	"github.com/elliotchance/orderedmap/v2"
 )
 
 // Styles mapping.
@@ -38,6 +39,8 @@ type Fielder interface {
 
 // Fields represents a map of entry level data used for structured logging.
 type Fields map[string]interface{}
+
+type OrderedFields orderedmap.OrderedMap[string, any]
 
 // Fields implements Fielder.
 func (f Fields) Fields() Fields {
@@ -84,7 +87,6 @@ func (l *Logger) DecreasePadding() {
 func (l *Logger) handleLog(e *Entry) {
 	style := Styles[e.Level]
 	level := Strings[e.Level]
-	names := e.Fields.Names()
 
 	l.mu.Lock()
 	defer l.mu.Unlock()
@@ -93,12 +95,12 @@ func (l *Logger) handleLog(e *Entry) {
 		l.Writer,
 		"%s %-*s",
 		style.Render(fmt.Sprintf("%*s", 1+e.Padding, level)),
-		l.rightPadding(names, e.Padding),
+		l.rightPadding(e.Fields.Keys(), e.Padding),
 		e.Message,
 	)
 
-	for _, name := range names {
-		fmt.Fprintf(l.Writer, " %s=%v", style.Render(name), e.Fields.Get(name))
+	for it := e.Fields.Front(); it != nil; it = it.Next() {
+		fmt.Fprintf(l.Writer, " %s=%v", style.Render(it.Key), it.Value)
 	}
 
 	fmt.Fprintln(l.Writer)

@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"time"
+
+	"github.com/elliotchance/orderedmap/v2"
 )
 
 // assert interface compliance.
@@ -14,12 +16,11 @@ var Now = time.Now
 
 // Entry represents a single log entry.
 type Entry struct {
-	Logger  *Logger `json:"-"`
-	Fields  Fields  `json:"fields"`
-	Level   Level   `json:"level"`
-	Message string  `json:"message"`
+	Logger  *Logger
+	Level   Level
+	Message string
 	Padding int
-	fields  []Fields
+	Fields  *orderedmap.OrderedMap[string, any]
 }
 
 // NewEntry returns a new entry for `log`.
@@ -27,6 +28,7 @@ func NewEntry(log *Logger) *Entry {
 	return &Entry{
 		Logger:  log,
 		Padding: log.Padding,
+		Fields:  orderedmap.NewOrderedMap[string, any](),
 	}
 }
 
@@ -47,13 +49,15 @@ func (e *Entry) DecreasePadding() {
 
 // WithFields returns a new entry with `fields` set.
 func (e *Entry) WithFields(fields Fielder) *Entry {
-	f := []Fields{}
-	f = append(f, e.fields...)
-	f = append(f, fields.Fields())
+	f := e.Fields.Copy()
+	for k, v := range fields.Fields() {
+		f.Set(k, v)
+	}
+
 	return &Entry{
 		Logger:  e.Logger,
 		Padding: e.Padding,
-		fields:  f,
+		Fields:  f,
 	}
 }
 
@@ -85,7 +89,7 @@ func (e *Entry) WithoutPadding() *Entry {
 	return &Entry{
 		Logger:  e.Logger,
 		Padding: defaultPadding,
-		fields:  e.fields,
+		Fields:  e.Fields,
 	}
 }
 
@@ -140,25 +144,12 @@ func (e *Entry) Fatalf(msg string, v ...interface{}) {
 	e.Fatal(fmt.Sprintf(msg, v...))
 }
 
-// mergedFields returns the fields list collapsed into a single map.
-func (e *Entry) mergedFields() Fields {
-	f := Fields{}
-
-	for _, fields := range e.fields {
-		for k, v := range fields {
-			f[k] = v
-		}
-	}
-
-	return f
-}
-
 // finalize returns a copy of the Entry with Fields merged.
 func (e *Entry) finalize(level Level, msg string) *Entry {
 	return &Entry{
 		Logger:  e.Logger,
-		Fields:  e.mergedFields(),
 		Padding: e.Padding,
+		Fields:  e.Fields,
 		Level:   level,
 		Message: msg,
 	}

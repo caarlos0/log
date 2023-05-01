@@ -5,19 +5,18 @@ import (
 	"testing"
 
 	"github.com/caarlos0/log"
-	"github.com/matryer/is"
+	"github.com/stretchr/testify/require"
 )
 
 func TestFromContext(t *testing.T) {
-	is := is.New(t)
 	ctx := context.Background()
 
 	logger := log.FromContext(ctx)
-	is.Equal(log.Log, logger)
+	require.Equal(t, log.Log, logger)
 
 	logs := log.WithField("foo", "bar")
 	ctx = log.NewContext(ctx, logs)
 
 	logger = log.FromContext(ctx)
-	is.Equal(logs, logger)
+	require.Equal(t, logs, logger)
 }

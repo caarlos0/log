@@ -1,0 +1,11 @@
+[1;94m  •[0m a                                                [1;94merror[0m=here
+[1;94m  •[0m info
+[1;94m  •[0m warn 1
+[1;93m  •[0m warn
+[1;93m  •[0m warn 1
+[1;91m  ⨯[0m error
+[1;91m  ⨯[0m warn 1
+[1;94m  •[0m foo                                              [1;94mfoo[0m=bar
+[1;94m    •[0m increased
+[1;94m  •[0m without padding                                  [1;94mfoo[0m=bar
+[1;94m    •[0m increased

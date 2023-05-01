@@ -3,7 +3,7 @@ package log
 import (
 	"testing"
 
-	"github.com/matryer/is"
+	"github.com/stretchr/testify/require"
 )
 
 func TestParseLevel(t *testing.T) {
@@ -23,16 +23,14 @@ func TestParseLevel(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.String, func(t *testing.T) {
 			l, err := ParseLevel(c.String)
-			is := is.New(t)
-			is.NoErr(err) // no parse err
-			is.Equal(c.Level, l)
+			require.NoError(t, err) // no parse err
+			require.Equal(t, c.Level, l)
 		})
 	}
 
 	t.Run("invalid", func(t *testing.T) {
 		l, err := ParseLevel("something")
-		is := is.New(t)
-		is.Equal(ErrInvalidLevel, err)
-		is.Equal(InvalidLevel, l)
+		require.Equal(t, ErrInvalidLevel, err)
+		require.Equal(t, InvalidLevel, l)
 	})
 }
