@@ -2,6 +2,8 @@ module github.com/caarlos0/log
 
 go 1.20
 
+retract v0.3.0 // this version was buggy
+
 require (
 	github.com/charmbracelet/lipgloss v0.7.1
 	github.com/elliotchance/orderedmap/v2 v2.2.0
