@@ -10,6 +10,7 @@ import (
 )
 
 func TestLoggerOrdering(t *testing.T) {
+	var l sync.Mutex
 	var outs [][]byte
 	var wg sync.WaitGroup
 	for i := 0; i < 10; i++ {
@@ -33,7 +34,9 @@ func TestLoggerOrdering(t *testing.T) {
 			log.WithoutPadding().WithField("foo", "bar").Info("without padding")
 			log.Info("increased")
 			log.ResetPadding()
+			l.Lock()
 			outs = append(outs, out.Bytes())
+			l.Unlock()
 		}()
 	}
 	wg.Wait()
