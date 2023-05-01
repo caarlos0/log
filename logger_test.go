@@ -63,16 +63,6 @@ func TestLogger_levels(t *testing.T) {
 	requireEqualOutput(t, out.Bytes())
 }
 
-func TestLogger_WithFields(t *testing.T) {
-	var out bytes.Buffer
-	l := log.New(&out)
-
-	ctx := l.WithFields(log.Fields{"file": "sloth.png"})
-	ctx.Debug("uploading")
-	ctx.Info("upload complete")
-	requireEqualOutput(t, out.Bytes())
-}
-
 func TestLogger_WithField(t *testing.T) {
 	var out bytes.Buffer
 	l := log.New(&out)
@@ -105,11 +95,10 @@ func BenchmarkLogger_medium(b *testing.B) {
 	l := log.New(&out)
 
 	for i := 0; i < b.N; i++ {
-		l.WithFields(log.Fields{
-			"file": "sloth.png",
-			"type": "image/png",
-			"size": 1 << 20,
-		}).Info("upload")
+		l.WithField("file", "sloth.png").
+			WithField("type", "image/png").
+			WithField("size", 1<<20).
+			Info("upload")
 	}
 }
 
@@ -120,19 +109,15 @@ func BenchmarkLogger_large(b *testing.B) {
 	err := fmt.Errorf("boom")
 
 	for i := 0; i < b.N; i++ {
-		l.WithFields(log.Fields{
-			"file": "sloth.png",
-			"type": "image/png",
-			"size": 1 << 20,
-		}).
-			WithFields(log.Fields{
-				"some":     "more",
-				"data":     "here",
-				"whatever": "blah blah",
-				"more":     "stuff",
-				"context":  "such useful",
-				"much":     "fun",
-			}).
+		l.WithField("file", "sloth.png").
+			WithField("type", "image/png").
+			WithField("size", 1<<20).
+			WithField("some", "more").
+			WithField("data", "here").
+			WithField("whatever", "blah blah").
+			WithField("more", "stuff").
+			WithField("context", "such useful").
+			WithField("much", "fun").
 			WithError(err).Error("upload failed")
 	}
 }

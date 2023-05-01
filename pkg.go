@@ -46,11 +46,6 @@ func DecreasePadding() {
 	Log.DecreasePadding()
 }
 
-// WithFields returns a new entry with `fields` set.
-func WithFields(fields Fielder) *Entry {
-	return Log.WithFields(fields)
-}
-
 // WithField returns a new entry with the `key` and `value` set.
 func WithField(key string, value interface{}) *Entry {
 	return Log.WithField(key, value)

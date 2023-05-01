@@ -20,18 +20,6 @@ func init() {
 	lipgloss.SetColorProfile(termenv.ANSI256)
 }
 
-type Pet struct {
-	Name string
-	Age  int
-}
-
-func (p *Pet) Fields() log.Fields {
-	return log.Fields{
-		"name": p.Name,
-		"age":  p.Age,
-	}
-}
-
 func TestRootLogOptions(t *testing.T) {
 	var out bytes.Buffer
 	log.Log = log.New(&out)
@@ -52,8 +40,6 @@ func TestRootLogOptions(t *testing.T) {
 	log.WithoutPadding().WithField("foo", "bar").Info("without padding")
 	log.Info("increased")
 	log.ResetPadding()
-	pet := &Pet{"Tobi", 3}
-	log.WithFields(pet).Info("add pet")
 	requireEqualOutput(t, out.Bytes())
 }
 
@@ -83,15 +69,6 @@ func Example_structured() {
 func Example_errors() {
 	err := errors.New("boom")
 	log.WithError(err).Error("upload failed")
-}
-
-// Multiple fields can be set, via chaining, or WithFields().
-func Example_multipleFields() {
-	log.WithFields(log.Fields{
-		"user": "Tobi",
-		"file": "sloth.png",
-		"type": "image/png",
-	}).Info("upload")
 }
 
 var update = flag.Bool("update", false, "update .golden files")

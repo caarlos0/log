@@ -47,23 +47,15 @@ func (e *Entry) DecreasePadding() {
 	e.Logger.DecreasePadding()
 }
 
-// WithFields returns a new entry with `fields` set.
-func (e *Entry) WithFields(fields Fielder) *Entry {
+// WithField returns a new entry with the `key` and `value` set.
+func (e *Entry) WithField(key string, value interface{}) *Entry {
 	f := e.Fields.Copy()
-	for k, v := range fields.Fields() {
-		f.Set(k, v)
-	}
-
+	f.Set(key, value)
 	return &Entry{
 		Logger:  e.Logger,
 		Padding: e.Padding,
 		Fields:  f,
 	}
-}
-
-// WithField returns a new entry with the `key` and `value` set.
-func (e *Entry) WithField(key string, value interface{}) *Entry {
-	return e.WithFields(Fields{key: value})
 }
 
 // WithError returns a new entry with the "error" set to `err`.
@@ -74,13 +66,7 @@ func (e *Entry) WithError(err error) *Entry {
 	if err == nil {
 		return e
 	}
-
 	ctx := e.WithField("error", err.Error())
-
-	if f, ok := err.(Fielder); ok {
-		ctx = ctx.WithFields(f.Fields())
-	}
-
 	return ctx
 }
 
