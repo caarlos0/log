@@ -1,6 +1,6 @@
 module github.com/caarlos0/log
 
-go 1.19
+go 1.20
 
 require (
 	github.com/charmbracelet/lipgloss v0.7.1
