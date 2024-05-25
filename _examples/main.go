@@ -13,18 +13,15 @@ func main() {
 		WithField("field2", "value2").
 		WithField("field1", "value1").
 		WithField("field4", "value4").
-		WithFields(log.Fields{
-			"FOO": "bar",
-		}).
+		WithField("FOO", "bar").
 		WithField("field3", "value3").
 		Info("AQUI")
 	log.WithField("foo", "bar").Debug("debug")
 	log.WithField("foo", "bar").Info("info")
 	log.WithField("foo", "bar").Warn("warn")
-	log.WithFields(log.Fields{
-		"multiple": "fields",
-		"yes":      true,
-	}).Info("a longer line in this particular log")
+	log.WithField("multiple", "fields").
+		WithField("yes", true).
+		Info("a longer line in this particular log")
 	log.IncreasePadding()
 	log.WithField("foo", "bar").Info("info with increased padding")
 	log.IncreasePadding()
