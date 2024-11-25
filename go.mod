@@ -8,7 +8,7 @@ require (
 	github.com/charmbracelet/lipgloss v1.0.0
 	github.com/elliotchance/orderedmap/v2 v2.4.0
 	github.com/muesli/termenv v0.15.2
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.10.0
 )
 
 require (
