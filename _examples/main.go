@@ -25,9 +25,17 @@ func main() {
 	log.IncreasePadding()
 	log.WithField("foo", "bar").Info("info with increased padding")
 	log.IncreasePadding()
+	log.WithField("foo", "bar").
+		WithField("text", "a multi\nline text going\non for multiple lines\nhello\nworld!").
+		Info("info with a more increased padding")
 	log.WithoutPadding().WithField("foo", "bar").Info("info without padding")
 	log.WithField("foo", "bar").Info("info with a more increased padding")
 	log.ResetPadding()
+	log.WithField("foo", "bar").
+		WithField("text", "a multi\nline text going\non for multiple lines\nhello\nworld!").
+		WithField("another", "bar").
+		WithField("lalalal", "bar").
+		Info("info with a more increased padding")
 	log.WithError(errors.New("some error")).Error("error")
 	log.WithError(errors.New("some fatal error")).Fatal("fatal")
 }

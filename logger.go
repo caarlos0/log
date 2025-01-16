@@ -3,6 +3,7 @@ package log
 import (
 	"fmt"
 	"io"
+	"strings"
 	"sync"
 
 	"github.com/charmbracelet/lipgloss"
@@ -54,6 +55,8 @@ func (l *Logger) DecreasePadding() {
 	l.Padding -= defaultPadding
 }
 
+const indentSeparator = "  │ "
+
 func (l *Logger) handleLog(e *Entry) {
 	style := Styles[e.Level]
 	level := Strings[e.Level]
@@ -69,8 +72,23 @@ func (l *Logger) handleLog(e *Entry) {
 		e.Message,
 	)
 
+	var previousMultiline bool
 	for it := e.Fields.Front(); it != nil; it = it.Next() {
+		if s, ok := it.Value.(string); ok && strings.Contains(s, "\n") {
+			fmt.Fprintln(l.Writer)
+			fmt.Fprint(l.Writer, strings.Repeat(" ", e.Padding+2))
+			fmt.Fprintln(l.Writer, style.Render(it.Key)+"=")
+			for _, line := range strings.Split(s, "\n") {
+				fmt.Fprintln(l.Writer, lipgloss.NewStyle().PaddingLeft(e.Padding).Render(indentSeparator+line))
+			}
+			previousMultiline = true
+			continue
+		}
+		if previousMultiline {
+			fmt.Fprint(l.Writer, strings.Repeat(" ", e.Padding+1))
+		}
 		fmt.Fprintf(l.Writer, " %s=%v", style.Render(it.Key), it.Value)
+		previousMultiline = false
 	}
 
 	fmt.Fprintln(l.Writer)
