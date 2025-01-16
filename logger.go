@@ -75,16 +75,24 @@ func (l *Logger) handleLog(e *Entry) {
 	var previousMultiline bool
 	for it := e.Fields.Front(); it != nil; it = it.Next() {
 		if s, ok := it.Value.(string); ok && strings.Contains(s, "\n") {
+			indent := style.
+				PaddingLeft(e.Padding).
+				SetString(indentSeparator).
+				String()
 			fmt.Fprintln(l.Writer)
 			fmt.Fprint(l.Writer, strings.Repeat(" ", e.Padding+2))
-			fmt.Fprintln(l.Writer, style.Render(it.Key)+"=")
+			fmt.Fprint(l.Writer, style.Render(it.Key)+"=")
 			for _, line := range strings.Split(s, "\n") {
-				fmt.Fprintln(l.Writer, lipgloss.NewStyle().PaddingLeft(e.Padding).Render(indentSeparator+line))
+				if strings.TrimSpace(line) == "" {
+					continue
+				}
+				fmt.Fprint(l.Writer, "\n"+indent+line)
 			}
 			previousMultiline = true
 			continue
 		}
 		if previousMultiline {
+			fmt.Fprintln(l.Writer)
 			fmt.Fprint(l.Writer, strings.Repeat(" ", e.Padding+1))
 		}
 		fmt.Fprintf(l.Writer, " %s=%v", style.Render(it.Key), it.Value)
