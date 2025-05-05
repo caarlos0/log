@@ -25,7 +25,7 @@ jobs:
         with:
           go-version: "stable"
           cache: true
-      - uses: golangci/golangci-lint-action@v7
+      - uses: golangci/golangci-lint-action@v8
   build:
     strategy:
       matrix:
