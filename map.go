@@ -45,9 +45,9 @@ func (o *orderedMap) Set(k string, v any) {
 }
 
 func (o *orderedMap) All() iter.Seq2[string, any] {
-	o.mu.RLock()
-	defer o.mu.RUnlock()
 	return func(yield func(string, any) bool) {
+		o.mu.RLock()
+		defer o.mu.RUnlock()
 		for _, k := range o.keys {
 			if !yield(k, o.inner[k]) {
 				return
