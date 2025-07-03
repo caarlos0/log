@@ -48,7 +48,7 @@ func (e *Entry) DecreasePadding() {
 }
 
 // WithField returns a new entry with the `key` and `value` set.
-func (e *Entry) WithField(key string, value interface{}) *Entry {
+func (e *Entry) WithField(key string, value any) *Entry {
 	f := e.Fields.Copy()
 	f.Set(key, value)
 	return &Entry{
@@ -106,27 +106,27 @@ func (e *Entry) Fatal(msg string) {
 }
 
 // Debugf level formatted message.
-func (e *Entry) Debugf(msg string, v ...interface{}) {
+func (e *Entry) Debugf(msg string, v ...any) {
 	e.Debug(fmt.Sprintf(msg, v...))
 }
 
 // Infof level formatted message.
-func (e *Entry) Infof(msg string, v ...interface{}) {
+func (e *Entry) Infof(msg string, v ...any) {
 	e.Info(fmt.Sprintf(msg, v...))
 }
 
 // Warnf level formatted message.
-func (e *Entry) Warnf(msg string, v ...interface{}) {
+func (e *Entry) Warnf(msg string, v ...any) {
 	e.Warn(fmt.Sprintf(msg, v...))
 }
 
 // Errorf level formatted message.
-func (e *Entry) Errorf(msg string, v ...interface{}) {
+func (e *Entry) Errorf(msg string, v ...any) {
 	e.Error(fmt.Sprintf(msg, v...))
 }
 
 // Fatalf level formatted message, followed by an exit.
-func (e *Entry) Fatalf(msg string, v ...interface{}) {
+func (e *Entry) Fatalf(msg string, v ...any) {
 	e.Fatal(fmt.Sprintf(msg, v...))
 }
 
