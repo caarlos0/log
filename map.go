@@ -38,7 +38,7 @@ func (o *orderedMap) Keys() []string {
 func (o *orderedMap) Set(k string, v any) {
 	o.mu.Lock()
 	defer o.mu.Unlock()
-	if !slices.Contains(o.keys, k) {
+	if _, ok := o.inner[k]; !ok {
 		o.keys = append(o.keys, k)
 	}
 	o.inner[k] = v
