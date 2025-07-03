@@ -10,10 +10,12 @@ import (
 )
 
 func TestLoggerOrdering(t *testing.T) {
+	t.Setenv("CLICOLOR_FORCE", "1")
+	t.Setenv("COLORTERM", "truecolor")
 	var l sync.Mutex
 	var outs [][]byte
 	var wg sync.WaitGroup
-	for i := 0; i < 10; i++ {
+	for range 10 {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
@@ -40,7 +42,7 @@ func TestLoggerOrdering(t *testing.T) {
 		}()
 	}
 	wg.Wait()
-	for i := 0; i < len(outs)-1; i++ {
+	for i := range len(outs) - 1 {
 		s1 := string(outs[i])
 		s2 := string(outs[i+1])
 		if s1 != s2 {
@@ -51,6 +53,8 @@ func TestLoggerOrdering(t *testing.T) {
 }
 
 func TestLogger_printf(t *testing.T) {
+	t.Setenv("CLICOLOR_FORCE", "1")
+	t.Setenv("COLORTERM", "truecolor")
 	var out bytes.Buffer
 	l := log.New(&out)
 	l.Infof("logged in %s", "Tobi")
@@ -58,6 +62,8 @@ func TestLogger_printf(t *testing.T) {
 }
 
 func TestLogger_levels(t *testing.T) {
+	t.Setenv("CLICOLOR_FORCE", "1")
+	t.Setenv("COLORTERM", "truecolor")
 	var out bytes.Buffer
 	l := log.New(&out)
 
@@ -67,6 +73,8 @@ func TestLogger_levels(t *testing.T) {
 }
 
 func TestLogger_WithField(t *testing.T) {
+	t.Setenv("CLICOLOR_FORCE", "1")
+	t.Setenv("COLORTERM", "truecolor")
 	var out bytes.Buffer
 	l := log.New(&out)
 
@@ -77,6 +85,8 @@ func TestLogger_WithField(t *testing.T) {
 }
 
 func TestLogger_HandlerFunc(t *testing.T) {
+	t.Setenv("CLICOLOR_FORCE", "1")
+	t.Setenv("COLORTERM", "truecolor")
 	var out bytes.Buffer
 	l := log.New(&out)
 
