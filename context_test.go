@@ -1,22 +1,24 @@
 package log_test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/caarlos0/log"
-	"github.com/stretchr/testify/require"
 )
 
 func TestFromContext(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 
 	logger := log.FromContext(ctx)
-	require.Equal(t, log.Log, logger)
+	if logger != log.Log {
+		t.Fatalf("expected %v, got %v", log.Log, logger)
+	}
 
 	logs := log.WithField("foo", "bar")
 	ctx = log.NewContext(ctx, logs)
 
 	logger = log.FromContext(ctx)
-	require.Equal(t, logs, logger)
+	if logger != logs {
+		t.Fatalf("expected %v, got %v", logs, logger)
+	}
 }
