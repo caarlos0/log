@@ -2,8 +2,6 @@ package log
 
 import (
 	"fmt"
-	"maps"
-	"slices"
 	"strings"
 	"sync"
 
@@ -66,7 +64,7 @@ func (l *Logger) handleLog(e *Entry) {
 	l.mu.Lock()
 	defer l.mu.Unlock()
 
-	keys := slices.Collect(maps.Keys(e.Fields))
+	keys := e.Fields.Keys()
 
 	fmt.Fprintf(
 		l.Writer,
@@ -77,8 +75,7 @@ func (l *Logger) handleLog(e *Entry) {
 	)
 
 	var previousMultiline bool
-	for _, key := range keys {
-		value := e.Fields[key]
+	for key, value := range e.Fields.All() {
 		if s, ok := value.(string); ok && strings.Contains(s, "\n") {
 			indent := style.
 				PaddingLeft(e.Padding).

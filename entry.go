@@ -18,7 +18,7 @@ type Entry struct {
 	Level   Level
 	Message string
 	Padding int
-	Fields  map[string]any
+	Fields  *orderedMap
 }
 
 // NewEntry returns a new entry for `log`.
@@ -26,7 +26,7 @@ func NewEntry(log *Logger) *Entry {
 	return &Entry{
 		Logger:  log,
 		Padding: log.Padding,
-		Fields:  map[string]any{},
+		Fields:  newOrderedMap(),
 	}
 }
 
@@ -47,16 +47,13 @@ func (e *Entry) DecreasePadding() {
 
 // WithField returns a new entry with the `key` and `value` set.
 func (e *Entry) WithField(key string, value any) *Entry {
-	e2 := &Entry{
+	o := e.Fields.Copy()
+	o.Set(key, value)
+	return &Entry{
 		Logger:  e.Logger,
 		Padding: e.Padding,
-		Fields:  map[string]any{},
+		Fields:  o,
 	}
-	for k, v := range e.Fields {
-		e2.Fields[k] = v
-	}
-	e2.Fields[key] = value
-	return e2
 }
 
 // WithError returns a new entry with the "error" set to `err`.
