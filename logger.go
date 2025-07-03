@@ -82,7 +82,7 @@ func (l *Logger) handleLog(e *Entry) {
 			fmt.Fprintln(l.Writer)
 			fmt.Fprint(l.Writer, strings.Repeat(" ", e.Padding+2))
 			fmt.Fprint(l.Writer, style.Render(key)+"=")
-			for _, line := range strings.Split(s, "\n") {
+			for line := range strings.SplitSeq(s, "\n") {
 				if strings.TrimSpace(line) == "" {
 					continue
 				}
