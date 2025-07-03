@@ -12,15 +12,11 @@ import (
 	"testing"
 
 	"github.com/caarlos0/log"
-	"github.com/charmbracelet/lipgloss"
-	"github.com/muesli/termenv"
 )
 
-func init() {
-	lipgloss.SetColorProfile(termenv.ANSI256)
-}
-
 func TestRootLogOptions(t *testing.T) {
+	t.Setenv("CLICOLOR_FORCE", "1")
+	t.Setenv("COLORTERM", "truecolor")
 	var out bytes.Buffer
 	log.Log = log.New(&out)
 	log.SetLevel(log.DebugLevel)
@@ -44,8 +40,10 @@ func TestRootLogOptions(t *testing.T) {
 }
 
 func TestRace(t *testing.T) {
+	t.Setenv("CLICOLOR_FORCE", "1")
+	t.Setenv("COLORTERM", "truecolor")
 	var wg sync.WaitGroup
-	for i := 0; i < 9999; i++ {
+	for range 9999 {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()

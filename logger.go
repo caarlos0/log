@@ -2,11 +2,11 @@ package log
 
 import (
 	"fmt"
-	"io"
 	"strings"
 	"sync"
 
-	"github.com/charmbracelet/lipgloss"
+	"github.com/charmbracelet/colorprofile"
+	"github.com/charmbracelet/lipgloss/v2"
 )
 
 // Styles mapping.
@@ -35,7 +35,7 @@ var _ Interface = (*Logger)(nil)
 // Logger represents a logger with configurable Level and Handler.
 type Logger struct {
 	mu      sync.Mutex
-	Writer  io.Writer
+	Writer  *colorprofile.Writer
 	Level   Level
 	Padding int
 }
@@ -113,7 +113,7 @@ func (l *Logger) rightPadding(names []string, padding int) int {
 //
 // Note that the `key` should not have spaces in it - use camel
 // case or underscores
-func (l *Logger) WithField(key string, value interface{}) *Entry {
+func (l *Logger) WithField(key string, value any) *Entry {
 	return NewEntry(l).WithField(key, value)
 }
 
@@ -153,27 +153,27 @@ func (l *Logger) Fatal(msg string) {
 }
 
 // Debugf level formatted message.
-func (l *Logger) Debugf(msg string, v ...interface{}) {
+func (l *Logger) Debugf(msg string, v ...any) {
 	NewEntry(l).Debugf(msg, v...)
 }
 
 // Infof level formatted message.
-func (l *Logger) Infof(msg string, v ...interface{}) {
+func (l *Logger) Infof(msg string, v ...any) {
 	NewEntry(l).Infof(msg, v...)
 }
 
 // Warnf level formatted message.
-func (l *Logger) Warnf(msg string, v ...interface{}) {
+func (l *Logger) Warnf(msg string, v ...any) {
 	NewEntry(l).Warnf(msg, v...)
 }
 
 // Errorf level formatted message.
-func (l *Logger) Errorf(msg string, v ...interface{}) {
+func (l *Logger) Errorf(msg string, v ...any) {
 	NewEntry(l).Errorf(msg, v...)
 }
 
 // Fatalf level formatted message, followed by an exit.
-func (l *Logger) Fatalf(msg string, v ...interface{}) {
+func (l *Logger) Fatalf(msg string, v ...any) {
 	NewEntry(l).Fatalf(msg, v...)
 }
 
