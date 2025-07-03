@@ -1,14 +1,13 @@
 package log_test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/caarlos0/log"
 )
 
 func TestFromContext(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 
 	logger := log.FromContext(ctx)
 	if logger != log.Log {
