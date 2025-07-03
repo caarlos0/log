@@ -73,16 +73,16 @@ func (l *Logger) handleLog(e *Entry) {
 	)
 
 	var previousMultiline bool
-	for it := e.Fields.Front(); it != nil; it = it.Next() {
-		if s, ok := it.Value.(string); ok && strings.Contains(s, "\n") {
+	for key, value := range e.Fields.All() {
+		if s, ok := value.(string); ok && strings.Contains(s, "\n") {
 			indent := style.
 				PaddingLeft(e.Padding).
 				SetString(indentSeparator).
 				String()
 			fmt.Fprintln(l.Writer)
 			fmt.Fprint(l.Writer, strings.Repeat(" ", e.Padding+2))
-			fmt.Fprint(l.Writer, style.Render(it.Key)+"=")
-			for _, line := range strings.Split(s, "\n") {
+			fmt.Fprint(l.Writer, style.Render(key)+"=")
+			for line := range strings.SplitSeq(s, "\n") {
 				if strings.TrimSpace(line) == "" {
 					continue
 				}
@@ -95,15 +95,15 @@ func (l *Logger) handleLog(e *Entry) {
 			fmt.Fprintln(l.Writer)
 			fmt.Fprint(l.Writer, strings.Repeat(" ", e.Padding+1))
 		}
-		fmt.Fprintf(l.Writer, " %s=%v", style.Render(it.Key), it.Value)
+		fmt.Fprintf(l.Writer, " %s=%v", style.Render(key), value)
 		previousMultiline = false
 	}
 
 	fmt.Fprintln(l.Writer)
 }
 
-func (l *Logger) rightPadding(names []string, padding int) int {
-	if len(names) == 0 {
+func (l *Logger) rightPadding(keys []string, padding int) int {
+	if len(keys) == 0 {
 		return 0
 	}
 	return 50 - padding

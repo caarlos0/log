@@ -7,7 +7,7 @@ import (
 	"github.com/charmbracelet/colorprofile"
 )
 
-// singletons ftw?
+// Log is a singleton instance of [Logger].
 var Log Interface = New(os.Stderr)
 
 // New creates a new logger.

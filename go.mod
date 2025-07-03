@@ -1,15 +1,12 @@
 module github.com/caarlos0/log
 
-go 1.23.0
-
-toolchain go1.24.4
+go 1.24.0
 
 retract v0.3.0 // this version was buggy
 
 require (
 	github.com/charmbracelet/colorprofile v0.3.1
 	github.com/charmbracelet/lipgloss/v2 v2.0.0-beta.2
-	github.com/elliotchance/orderedmap/v2 v2.7.0
 	github.com/stretchr/testify v1.10.0
 )
 

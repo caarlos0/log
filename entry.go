@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"os"
 	"time"
-
-	"github.com/elliotchance/orderedmap/v2"
 )
 
 // assert interface compliance.
@@ -20,7 +18,7 @@ type Entry struct {
 	Level   Level
 	Message string
 	Padding int
-	Fields  *orderedmap.OrderedMap[string, any]
+	Fields  *orderedMap
 }
 
 // NewEntry returns a new entry for `log`.
@@ -28,7 +26,7 @@ func NewEntry(log *Logger) *Entry {
 	return &Entry{
 		Logger:  log,
 		Padding: log.Padding,
-		Fields:  orderedmap.NewOrderedMap[string, any](),
+		Fields:  newOrderedMap(),
 	}
 }
 
