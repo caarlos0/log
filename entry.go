@@ -47,12 +47,12 @@ func (e *Entry) DecreasePadding() {
 
 // WithField returns a new entry with the `key` and `value` set.
 func (e *Entry) WithField(key string, value any) *Entry {
-	o := e.Fields.Copy()
-	o.Set(key, value)
+	f := e.Fields.Copy()
+	f.Set(key, value)
 	return &Entry{
 		Logger:  e.Logger,
 		Padding: e.Padding,
-		Fields:  o,
+		Fields:  f,
 	}
 }
 

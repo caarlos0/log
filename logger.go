@@ -64,13 +64,11 @@ func (l *Logger) handleLog(e *Entry) {
 	l.mu.Lock()
 	defer l.mu.Unlock()
 
-	keys := e.Fields.Keys()
-
 	fmt.Fprintf(
 		l.Writer,
 		"%s %-*s",
 		style.Render(fmt.Sprintf("%*s", 1+e.Padding, level)),
-		l.rightPadding(keys, e.Padding),
+		l.rightPadding(e.Fields.Keys(), e.Padding),
 		e.Message,
 	)
 
