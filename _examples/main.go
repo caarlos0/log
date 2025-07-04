@@ -2,17 +2,9 @@ package main
 
 import (
 	"errors"
-	"os"
 
 	"github.com/caarlos0/log"
 )
-
-func init() {
-	// enable colored output on github actions et al
-	if os.Getenv("CI") != "" {
-		os.Setenv("CLICOLOR_FORCE", "1")
-	}
-}
 
 func main() {
 	log.SetLevel(log.DebugLevel)
