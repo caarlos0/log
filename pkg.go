@@ -12,8 +12,12 @@ var Log Interface = New(os.Stderr)
 
 // New creates a new logger.
 func New(w io.Writer) *Logger {
+	env := os.Environ()
+	if os.Getenv("CI") != "" {
+		env = append(env, "CLICOLOR_FORCE=1")
+	}
 	return &Logger{
-		Writer:  colorprofile.NewWriter(w, os.Environ()),
+		Writer:  colorprofile.NewWriter(w, env),
 		Padding: defaultPadding,
 		Level:   InfoLevel,
 	}
