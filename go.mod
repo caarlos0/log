@@ -6,7 +6,7 @@ retract v0.3.0 // this version was buggy
 
 require (
 	github.com/charmbracelet/colorprofile v0.3.2
-	github.com/charmbracelet/lipgloss/v2 v2.0.0-beta1
+	github.com/charmbracelet/lipgloss/v2 v2.0.0-beta.3
 )
 
 require (
