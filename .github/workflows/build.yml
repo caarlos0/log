@@ -43,7 +43,7 @@ jobs:
           cache: true
       - run: go run _examples/main.go || true
       - run: go test -v -failfast -race -coverpkg=./... -covermode=atomic -coverprofile=coverage.txt
-      - uses: codecov/codecov-action@968872560f81e7bdde9272853e65f2507c0eca7c # v5.0.0
+      - uses: codecov/codecov-action@5a1091511ad55cbe89839c7260b706298ca349f7 # v5.5.1
         if: matrix.os == 'ubuntu-latest'
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
