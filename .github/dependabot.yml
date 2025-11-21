@@ -12,10 +12,6 @@ updates:
     commit-message:
       prefix: "chore"
       include: "scope"
-    ignore:
-      - dependency-name: github.com/charmbracelet/lipgloss/v2
-        versions:
-          - v2.0.0-beta1
     groups:
       go:
         patterns:
