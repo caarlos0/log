@@ -2,6 +2,7 @@ package log
 
 import (
 	"fmt"
+	"io"
 	"strings"
 	"sync"
 
@@ -35,9 +36,21 @@ var _ Interface = (*Logger)(nil)
 // Logger represents a logger with configurable Level and Handler.
 type Logger struct {
 	mu      sync.Mutex
-	Writer  *colorprofile.Writer
+	writer  *colorprofile.Writer
 	Level   Level
 	Padding int
+}
+
+// Writer returns a writer with the current log level and indentation.
+func (l *Logger) Writer() io.Writer {
+	return &indentedLogWriter{
+		writer:     l.writer,
+		needIndent: true,
+		indent: Styles[l.Level].
+			PaddingLeft(l.Padding).
+			SetString(indentSeparator).
+			String(),
+	}
 }
 
 // ResetPadding resets the padding to default.
@@ -65,7 +78,7 @@ func (l *Logger) handleLog(e *Entry) {
 	defer l.mu.Unlock()
 
 	fmt.Fprintf(
-		l.Writer,
+		l.writer,
 		"%s %-*s",
 		style.Render(fmt.Sprintf("%*s", 1+e.Padding, level)),
 		l.rightPadding(e.Fields.Keys(), e.Padding),
@@ -79,27 +92,27 @@ func (l *Logger) handleLog(e *Entry) {
 				PaddingLeft(e.Padding).
 				SetString(indentSeparator).
 				String()
-			fmt.Fprintln(l.Writer)
-			fmt.Fprint(l.Writer, strings.Repeat(" ", e.Padding+2))
-			fmt.Fprint(l.Writer, style.Render(key)+"=")
+			fmt.Fprintln(l.writer)
+			fmt.Fprint(l.writer, strings.Repeat(" ", e.Padding+2))
+			fmt.Fprint(l.writer, style.Render(key)+"=")
 			for line := range strings.SplitSeq(s, "\n") {
 				if strings.TrimSpace(line) == "" {
 					continue
 				}
-				fmt.Fprint(l.Writer, "\n"+indent+line)
+				fmt.Fprint(l.writer, "\n"+indent+line)
 			}
 			previousMultiline = true
 			continue
 		}
 		if previousMultiline {
-			fmt.Fprintln(l.Writer)
-			fmt.Fprint(l.Writer, strings.Repeat(" ", e.Padding+1))
+			fmt.Fprintln(l.writer)
+			fmt.Fprint(l.writer, strings.Repeat(" ", e.Padding+1))
 		}
-		fmt.Fprintf(l.Writer, " %s=%v", style.Render(key), value)
+		fmt.Fprintf(l.writer, " %s=%v", style.Render(key), value)
 		previousMultiline = false
 	}
 
-	fmt.Fprintln(l.Writer)
+	fmt.Fprintln(l.writer)
 }
 
 func (l *Logger) rightPadding(keys []string, padding int) int {
