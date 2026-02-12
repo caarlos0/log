@@ -17,7 +17,7 @@ func New(w io.Writer) *Logger {
 		env = append(env, "CLICOLOR_FORCE=1")
 	}
 	return &Logger{
-		Writer:  colorprofile.NewWriter(w, env),
+		writer:  colorprofile.NewWriter(w, env),
 		Padding: defaultPadding,
 		Level:   InfoLevel,
 	}
