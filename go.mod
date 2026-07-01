@@ -5,7 +5,7 @@ go 1.25.0
 retract v0.3.0 // this version was buggy
 
 require (
-	charm.land/lipgloss/v2 v2.0.3
+	charm.land/lipgloss/v2 v2.0.4
 	github.com/charmbracelet/colorprofile v0.4.3
 )
 
