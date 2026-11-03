@@ -11,12 +11,6 @@ jobs:
     uses: caarlos0/meta/.github/workflows/semgrep.yml@c7f17af352dac91fa6c785d06ebac8547f1abdd3 # v0.1.0
     permissions:
       contents: read
-  ruleguard:
-    uses: caarlos0/meta/.github/workflows/ruleguard.yml@c7f17af352dac91fa6c785d06ebac8547f1abdd3 # v0.1.0
-    permissions:
-      contents: read
-    with:
-      go-version: "stable"
   golangci-lint:
     runs-on: ubuntu-latest
     permissions:
